@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Asegura escalado correcto en móviles -->
     <title>Mapa Mundial En Apoyo Al 11J Por LA LIBERTAD DE TODOS Los Presos Políticos en las Cárceles de Cuba</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -56,6 +57,14 @@
             margin: 10px 0;
             border-radius: 3px;
         }
+        .video-container {
+            padding: 10px;
+            text-align: center;
+        }
+        video {
+            max-width: 100%;
+            height: auto;
+        }
         img {
             max-width: 100px;
             height: auto;
@@ -74,54 +83,66 @@
         }
         @media (max-width: 767px) {
             #map {
-                height: 30vh; /* Asegurado a 30vh para móviles */
+                height: 25vh; /* Reducido a 25vh */
+            }
+            body {
+                font-size: 1.2em; /* Base mayor para todos los elementos */
             }
             .info h1 {
-                font-size: 1.6em; /* Letras más grandes */
+                font-size: 2em; /* Muy grande para móviles */
             }
             .info p {
-                font-size: 1.1em; /* Letras más grandes */
+                font-size: 1.3em; /* Más grande */
             }
             .interactive h2 {
-                font-size: 1.3em; /* Título más grande */
+                font-size: 1.5em; /* Más grande */
             }
             .interactive input, .interactive button {
                 width: 80%;
                 margin: 5px 0;
-                padding: 8px;
-                font-size: 1.1em; /* Letras más grandes en inputs */
+                padding: 10px;
+                font-size: 1.2em; /* Más grande */
             }
             .tab {
-                font-size: 1.1em; /* Letras más grandes en pestañas */
+                font-size: 1.2em; /* Más grande */
             }
             .call-to-action h3 {
-                font-size: 1.2em; /* Letras más grandes */
+                font-size: 1.3em; /* Más grande */
+            }
+            video {
+                max-height: 200px;
             }
         }
         @media (max-width: 480px) {
             #map {
-                height: 25vh; /* Asegurado a 25vh para móviles pequeños */
+                height: 20vh; /* Reducido a 20vh */
+            }
+            body {
+                font-size: 1.1em; /* Base mayor */
             }
             .info h1 {
-                font-size: 1.4em; /* Letras más grandes */
+                font-size: 1.8em; /* Ajuste */
             }
             .info p {
-                font-size: 1em; /* Ajuste */
+                font-size: 1.2em; /* Ajuste */
             }
             .interactive h2 {
-                font-size: 1.1em; /* Ajuste */
+                font-size: 1.3em; /* Ajuste */
             }
             .interactive input, .interactive button {
                 width: 90%;
-                padding: 6px;
-                font-size: 1em; /* Ajuste */
+                padding: 8px;
+                font-size: 1.1em; /* Ajuste */
             }
             .tab {
-                font-size: 1em; /* Ajuste */
+                font-size: 1.1em; /* Ajuste */
             }
             .call-to-action {
                 padding: 8px;
-                font-size: 1.1em; /* Letras más grandes */
+                font-size: 1.2em; /* Ajuste */
+            }
+            video {
+                max-height: 150px;
             }
         }
     </style>
@@ -141,6 +162,13 @@
         <div class="tab" onclick="flyTo([25.7531, -80.2166])">Museo Diáspora Cubana (Miami)</div>
     </div>
     <div id="map"></div>
+    <div class="video-container">
+        <h2>Video de Apoyo</h2>
+        <video controls autoplay>
+            <source src="videos/mi_video.mp4" type="video/mp4">
+            Tu navegador no soporta el tag de video.
+        </video>
+    </div>
     <div class="interactive">
         <h2>¿Quieres agregar una protesta?</h2>
         <input type="text" id="location" placeholder="Ubicación">
