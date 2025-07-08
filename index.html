@@ -9,13 +9,13 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f0f8ff; /* Azul claro */
+            background-color: #f0f8ff;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
         }
         #map {
-            height: 40vh; /* Base para desktop y otros dispositivos */
+            height: 40vh;
             width: 100%;
             flex-grow: 1;
         }
@@ -26,7 +26,7 @@
             word-wrap: break-word;
         }
         .tabs {
-            background: #ff4d4d; /* Rojo temático */
+            background: #ff4d4d;
             padding: 10px;
             display: flex;
             flex-wrap: wrap;
@@ -64,7 +64,7 @@
         /* Media Queries */
         @media (min-width: 768px) {
             #map {
-                height: 50vh; /* Sin cambio para desktop */
+                height: 50vh;
             }
             .tabs {
                 position: sticky;
@@ -74,54 +74,54 @@
         }
         @media (max-width: 767px) {
             #map {
-                height: 30vh; /* Reducido a 30vh para móviles */
+                height: 30vh; /* Asegurado a 30vh para móviles */
             }
             .info h1 {
-                font-size: 1.5em; /* Letras más grandes */
+                font-size: 1.6em; /* Letras más grandes */
             }
             .info p {
-                font-size: 1em; /* Letras más grandes */
+                font-size: 1.1em; /* Letras más grandes */
             }
             .interactive h2 {
-                font-size: 1.2em; /* Título más grande */
+                font-size: 1.3em; /* Título más grande */
             }
             .interactive input, .interactive button {
                 width: 80%;
                 margin: 5px 0;
                 padding: 8px;
-                font-size: 1em; /* Letras más grandes en inputs */
+                font-size: 1.1em; /* Letras más grandes en inputs */
             }
             .tab {
-                font-size: 1em; /* Letras más grandes en pestañas */
+                font-size: 1.1em; /* Letras más grandes en pestañas */
             }
             .call-to-action h3 {
-                font-size: 1.1em; /* Letras más grandes */
+                font-size: 1.2em; /* Letras más grandes */
             }
         }
         @media (max-width: 480px) {
             #map {
-                height: 25vh; /* Reducido a 25vh para móviles pequeños */
+                height: 25vh; /* Asegurado a 25vh para móviles pequeños */
             }
             .info h1 {
-                font-size: 1.3em; /* Letras aún más grandes */
+                font-size: 1.4em; /* Letras más grandes */
             }
             .info p {
-                font-size: 0.9em; /* Ajuste leve */
+                font-size: 1em; /* Ajuste */
             }
             .interactive h2 {
-                font-size: 1em; /* Ajuste */
+                font-size: 1.1em; /* Ajuste */
             }
             .interactive input, .interactive button {
                 width: 90%;
                 padding: 6px;
-                font-size: 0.9em; /* Ajuste leve */
+                font-size: 1em; /* Ajuste */
             }
             .tab {
-                font-size: 0.9em; /* Ajuste */
+                font-size: 1em; /* Ajuste */
             }
             .call-to-action {
                 padding: 8px;
-                font-size: 1em; /* Letras más grandes */
+                font-size: 1.1em; /* Letras más grandes */
             }
         }
     </style>
@@ -167,8 +167,8 @@
 
         // Ícono personalizado con bandera cubana
         var customIcon = L.icon({
-            iconUrl: 'https://flagcdn.com/h20/cu.png', // Bandera cubana pequeña
-            iconSize: [20, 20] // Tamaño del ícono
+            iconUrl: 'https://flagcdn.com/h20/cu.png',
+            iconSize: [20, 20]
         });
 
         // Marcadores con bandera cubana
@@ -183,7 +183,7 @@
 
         // Función para mover el mapa
         function flyTo(coords) {
-            map.flyTo(coords, 13); // Zoom a nivel de calle
+            map.flyTo(coords, 13);
             markers.forEach(marker => {
                 if (marker.getLatLng().equals(L.latLng(coords))) {
                     marker.openPopup();
