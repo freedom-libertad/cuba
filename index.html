@@ -15,7 +15,7 @@
             min-height: 100vh;
         }
         #map {
-            height: 40vh; /* Reducido de 60vh a 40vh para hacerlo más corto */
+            height: 40vh; /* Base para desktop y otros dispositivos */
             width: 100%;
             flex-grow: 1;
         }
@@ -64,7 +64,7 @@
         /* Media Queries */
         @media (min-width: 768px) {
             #map {
-                height: 50vh; /* Reducido de 80vh a 50vh para desktop */
+                height: 50vh; /* Sin cambio para desktop */
             }
             .tabs {
                 position: sticky;
@@ -74,40 +74,54 @@
         }
         @media (max-width: 767px) {
             #map {
-                height: 35vh; /* Ajustado a 35vh para móviles */
+                height: 30vh; /* Reducido a 30vh para móviles */
             }
             .info h1 {
-                font-size: 1.2em;
+                font-size: 1.5em; /* Letras más grandes */
             }
             .info p {
-                font-size: 0.9em;
+                font-size: 1em; /* Letras más grandes */
+            }
+            .interactive h2 {
+                font-size: 1.2em; /* Título más grande */
             }
             .interactive input, .interactive button {
                 width: 80%;
                 margin: 5px 0;
                 padding: 8px;
+                font-size: 1em; /* Letras más grandes en inputs */
             }
             .tab {
-                font-size: 0.8em;
+                font-size: 1em; /* Letras más grandes en pestañas */
+            }
+            .call-to-action h3 {
+                font-size: 1.1em; /* Letras más grandes */
             }
         }
         @media (max-width: 480px) {
             #map {
-                height: 30vh; /* Ajustado a 30vh para móviles pequeños */
+                height: 25vh; /* Reducido a 25vh para móviles pequeños */
             }
             .info h1 {
-                font-size: 1em;
+                font-size: 1.3em; /* Letras aún más grandes */
             }
             .info p {
-                font-size: 0.8em;
+                font-size: 0.9em; /* Ajuste leve */
+            }
+            .interactive h2 {
+                font-size: 1em; /* Ajuste */
             }
             .interactive input, .interactive button {
                 width: 90%;
                 padding: 6px;
+                font-size: 0.9em; /* Ajuste leve */
+            }
+            .tab {
+                font-size: 0.9em; /* Ajuste */
             }
             .call-to-action {
                 padding: 8px;
-                font-size: 0.9em;
+                font-size: 1em; /* Letras más grandes */
             }
         }
     </style>
