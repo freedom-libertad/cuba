@@ -5,21 +5,168 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <style>
-        body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
-        #map { height: 600px; width: 100%; }
-        .info { padding: 20px; background: #f4f4f4; margin: 10px; }
-        .interactive { padding: 10px; text-align: center; }
-        .layer-control { padding: 10px; }
-        #error { color: red; padding: 10px; display: none; }
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 0; 
+            padding: 0; 
+            background-color: #f0f8ff; 
+            display: flex; 
+            flex-direction: row; /* Alineación horizontal en desktop */
+        }
+        #sidebar { 
+            width: 200px; /* Ancho más razonable para desktop */
+            background: #e0f7fa; 
+            padding: 10px; 
+            height: 100vh; 
+            overflow-y: auto; 
+            transition: width 0.3s; /* Animación suave al colapsar */
+        }
+        #toggle-sidebar { 
+            display: none; /* Oculto por defecto, aparecerá en móviles */
+            padding: 10px; 
+            background: #ff4d4d; 
+            color: white; 
+            border: none; 
+            cursor: pointer; 
+            width: 100%; 
+        }
+        #sidebar.collapsed { 
+            width: 0; 
+            padding: 0; 
+        }
+        .tab { 
+            padding: 10px; 
+            margin: 5px 0; 
+            background: #ff4d4d; 
+            color: white; 
+            cursor: pointer; 
+            border-radius: 5px; 
+            text-align: center; 
+        }
+        .tab:hover { 
+            background: #cc0000; 
+        }
+        #map { 
+            height: 100vh; 
+            width: calc(100% - 200px); /* Ajusta según el ancho del sidebar */
+            flex-grow: 1; 
+        }
+        .info { 
+            padding: 20px; 
+            background: #e0f7fa; 
+            margin: 10px; 
+            text-align: center; 
+        }
+        .interactive { 
+            padding: 10px; 
+            text-align: center; 
+        }
+        .layer-control { 
+            padding: 10px; 
+        }
+        .call-to-action { 
+            padding: 15px; 
+            background: #ff4d4d; 
+            color: white; 
+            text-align: center; 
+            margin: 10px; 
+            border-radius: 5px; 
+        }
+        img { 
+            max-width: 100px; 
+            height: auto; 
+        }
+
+        /* Media Queries para Mobile Friendly */
+        @media (max-width: 768px) { 
+            body { 
+                flex-direction: column; /* Apila elementos en móviles */
+            }
+            #sidebar { 
+                width: 100%; 
+                height: auto; 
+                display: none; /* Oculto por defecto en móviles */
+                position: relative; 
+            }
+            #sidebar.active { 
+                display: block; /* Muestra cuando se activa */
+            }
+            #toggle-sidebar { 
+                display: block; /* Botón visible en móviles */
+            }
+            #map { 
+                height: 400px; 
+                width: 100%; 
+            }
+            .tab { 
+                display: inline-block; 
+                width: 30%; 
+                margin: 5px; 
+                font-size: 0.9em; 
+            }
+            .info h1 { 
+                font-size: 1.5em; 
+            }
+            .info p { 
+                font-size: 0.9em; 
+            }
+            .interactive input, .interactive button { 
+                width: 80%; 
+                margin: 5px 0; 
+                padding: 10px; 
+            }
+            .layer-control label { 
+                font-size: 0.9em; 
+                margin: 0 10px; 
+            }
+            .call-to-action h3 { 
+                font-size: 1em; 
+            }
+        }
+
+        @media (max-width: 480px) { 
+            #map { 
+                height: 300px; 
+            }
+            .info h1 { 
+                font-size: 1.2em; 
+            }
+            .info p { 
+                font-size: 0.8em; 
+            }
+            .interactive input, .interactive button { 
+                width: 90%; 
+                padding: 8px; 
+            }
+            .call-to-action { 
+                padding: 10px; 
+            }
+            .tab { 
+                width: 40%; 
+                font-size: 0.8em; 
+            }
+        }
     </style>
 </head>
 <body>
+    <button id="toggle-sidebar">Mostrar/Ocultar Pestañas</button>
+    <div id="sidebar">
+        <div class="tab" onclick="flyToLocation([40.7488, -73.9772], 'Manifestación por Ferrer')">Manifestación por Ferrer (NYC)</div>
+        <div class="tab" onclick="flyToLocation([52.5170, 13.3889], 'Protesta por los Derechos Humanos en Cuba')">Protesta por los Derechos Humanos (Berlín)</div>
+        <div class="tab" onclick="flyToLocation([38.9058, -77.0488], 'Vigilia Patria y Libertad')">Vigilia Patria y Libertad (Washington D.C.)</div>
+        <div class="tab" onclick="flyToLocation([40.4192, -3.7038], '11 de Julio MADRID - CUBA')">11 de Julio MADRID - CUBA</div>
+        <div class="tab" onclick="flyToLocation([25.7652, -80.2455], '4to Aniversario del J11')">4to Aniversario del J11 (Miami)</div>
+        <div class="tab" onclick="flyToLocation([25.7531, -80.2166], 'Museo Americano de la Diáspora Cubana')">Museo Americano de la Diáspora (Miami)</div>
+    </div>
     <div class="info">
         <h1>Mapa Mundial En Apoyo Al 11J Por LA LIBERTAD DE TODOS Los Presos Políticos en las Cárceles de Cuba "ABAJO EL COMUNISMO" Y "VIVA LA LIBERTAD DE EXPRESIÓN"</h1>
         <p>Únete a las manifestaciones globales por la libertad. Explora las ubicaciones y horarios en el mapa interactivo.</p>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Flag_of_Cuba.svg/200px-Flag_of_Cuba.svg.png" alt="Bandera de Cuba" style="width: 100px;">
+    </div>
+    <div class="call-to-action">
+        <h3>¡Comparte esta causa por la libertad! Copia el enlace: <a href="https://freedom-libertad.github.io/cuba/" style="color: white; text-decoration: underline;">https://freedom-libertad.github.io/cuba/</a></h3>
     </div>
     <div id="map"></div>
-    <div id="error">Error: El mapa no se pudo cargar. Verifica tu conexión o consulta la consola (F12).</div>
     <div class="interactive">
         <h2>¿Quieres agregar una protesta?</h2>
         <input type="text" id="location" placeholder="Ubicación">
@@ -45,24 +192,20 @@
         greenLayer.addTo(map);
 
         // Marcadores para las protestas
-        L.marker([40.7488, -73.9772]).addTo(map)
-            .bindPopup("<b>Manifestación por Ferrer</b><br>11 de julio de 2025, 6:00 p.m.<br>315 Lexington Ave, NYC<br>Organizada por Nueva York con UNPACU")
-            .openPopup();
-        L.marker([52.5170, 13.3889]).addTo(map)
-            .bindPopup("<b>Protesta por los Derechos Humanos en Cuba</b><br>11 de julio de 2025, 13:00 - 16:00 Uhr<br>Auswärtiges Amt, Werderscher Markt 6, 10117, Berlín")
-            .openPopup();
-        L.marker([38.9058, -77.0488]).addTo(map)
-            .bindPopup("<b>Vigilia Patria y Libertad</b><br>11 de julio de 2025, 7:00 p.m.<br>Embajada de Cuba, Washington D.C.")
-            .openPopup();
-        L.marker([40.4192, -3.7038]).addTo(map)
-            .bindPopup("<b>11 de Julio MADRID - CUBA</b><br>11 de julio de 2025, 12:00 p.m. - 20:00 p.m.<br>Plaza Santo Domingo, Madrid, España")
-            .openPopup();
-        L.marker([25.7652, -80.2455]).addTo(map)
-            .bindPopup("<b>4to Aniversario del J11</b><br>11 de julio de 2025<br>Versailles Restaurant, 3555 SW 8TH ST, Miami, 33135")
-            .openPopup();
-        L.marker([25.7531, -80.2166]).addTo(map)
-            .bindPopup("<b>Museo Americano de la Diáspora Cubana</b><br>11 de julio de 2025, Todo el día<br>1200 Coral Way, Miami, FL")
-            .openPopup();
+        var markers = [
+            { lat: 40.7488, lng: -73.9772, title: 'Manifestación por Ferrer', popup: "<b>Manifestación por Ferrer</b><br>11 de julio de 2025, 6:00 p.m.<br>315 Lexington Ave, NYC<br>Organizada por Nueva York con UNPACU" },
+            { lat: 52.5170, lng: 13.3889, title: 'Protesta por los Derechos Humanos en Cuba', popup: "<b>Protesta por los Derechos Humanos en Cuba</b><br>11 de julio de 2025, 13:00 - 16:00 Uhr<br>Auswärtiges Amt, Werderscher Markt 6, 10117, Berlín" },
+            { lat: 38.9058, lng: -77.0488, title: 'Vigilia Patria y Libertad', popup: "<b>Vigilia Patria y Libertad</b><br>11 de julio de 2025, 7:00 p.m.<br>Embajada de Cuba, Washington D.C." },
+            { lat: 40.4192, lng: -3.7038, title: '11 de Julio MADRID - CUBA', popup: "<b>11 de Julio MADRID - CUBA</b><br>11 de julio de 2025, 12:00 p.m. - 20:00 p.m.<br>Plaza Santo Domingo, Madrid, España" },
+            { lat: 25.7652, lng: -80.2455, title: '4to Aniversario del J11', popup: "<b>4to Aniversario del J11</b><br>11 de julio de 2025<br>Versailles Restaurant, 3555 SW 8TH ST, Miami, 33135" },
+            { lat: 25.7531, lng: -80.2166, title: 'Museo Americano de la Diáspora Cubana', popup: "<b>Museo Americano de la Diáspora Cubana</b><br>11 de julio de 2025, Todo el día<br>1200 Coral Way, Miami, FL" }
+        ];
+
+        markers.forEach(marker => {
+            L.marker([marker.lat, marker.lng], { icon: customIcon }).addTo(map)
+                .bindPopup(marker.popup)
+                .openPopup();
+        });
 
         // Función para agregar protestas
         function addProtest() {
@@ -82,25 +225,27 @@
             }
         }
 
-        // Verifica si el mapa se carga
-        if (!map) {
-            document.getElementById('error').style.display = 'block';
-            console.error('El mapa no se inicializó correctamente.');
-        } else {
-            document.getElementById('error').style.display = 'none';
+        // Función para mover el mapa a una ubicación
+        function flyToLocation(coords, title) {
+            map.flyTo(coords, 13); // Zoom a nivel de calle
+            markers.forEach(marker => {
+                if (marker.title === title) {
+                    marker.marker.openPopup();
+                }
+            });
         }
+
+        // Toggle sidebar en móviles
+        document.getElementById('toggle-sidebar').addEventListener('click', function() {
+            var sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('active');
+        });
 
         // Opcional: Íconos personalizados
         var customIcon = L.icon({
             iconUrl: 'https://flagcdn.com/h20/cu.png',
             iconSize: [20, 20]
         });
-        L.marker([40.7488, -73.9772], {icon: customIcon}).addTo(map);
-        L.marker([52.5170, 13.3889], {icon: customIcon}).addTo(map);
-        L.marker([38.9058, -77.0488], {icon: customIcon}).addTo(map);
-        L.marker([40.4192, -3.7038], {icon: customIcon}).addTo(map);
-        L.marker([25.7652, -80.2455], {icon: customIcon}).addTo(map);
-        L.marker([25.7531, -80.2166], {icon: customIcon}).addTo(map);
     </script>
 </body>
 </html>
