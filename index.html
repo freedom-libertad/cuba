@@ -30,9 +30,9 @@
             clip-path: polygon(0 0, 100% 0, 100% 40%, 0 40%); /* Clips stars above .map-video-container */
         }
         .header-image {
-            background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Flag_of_Cuba.svg/1200px-Flag_of_Cuba.svg.png') no-repeat center 40%;
+            background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Flag_of_Cuba.svg/1200px-Flag_of_Cuba.svg.png') no-repeat left 40%; /* Adjusted to focus on triangle */
             background-size: cover;
-            height: 150px;
+            height: 200px; /* Increased for mobile */
             width: 100%;
         }
         .info {
@@ -83,7 +83,15 @@
             transform: scale(1.05);
         }
         .menu-toggle {
-            display: none; /* Removed from mobile */
+            display: none;
+            font-size: 1.5em;
+            color: white;
+            background: #cc0000;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            margin: 5px;
+            border-radius: 3px;
         }
         .interactive {
             padding: 10px;
@@ -131,7 +139,7 @@
             justify-content: space-between;
             position: relative;
             z-index: 1;
-            background: #fff; /* Solid background to cover stars */
+            background: black; /* Solid black background */
         }
         #map {
             width: 70%;
@@ -178,16 +186,20 @@
                 width: 23%;
             }
             .header-image {
-                height: 200px;
+                height: 250px; /* Increased for tablet/desktop */
             }
             .tabs {
                 display: flex; /* Show tabs on desktop */
+            }
+            .menu-toggle {
+                display: none;
             }
         }
         @media (max-width: 767px) {
             #map {
                 height: 35vh;
                 width: 100%;
+                z-index: 1;
             }
             .video-container {
                 height: 35vh;
@@ -212,20 +224,30 @@
                 padding: 10px;
                 font-size: 1.2em;
             }
-            .tab {
-                display: none; /* Hide tabs on mobile */
+            .tabs {
+                display: none;
+                flex-direction: column;
+                width: 100%;
             }
-            .call-to-action h3 {
-                font-size: 1.3em;
+            .tabs.active {
+                display: flex;
+            }
+            .menu-toggle {
+                display: block;
+            }
+            #map {
+                z-index: 1; /* Ensure map is above canvas */
+                map.flyTo([40.7488, -73.9772], 14); /* Adjusted zoom for mobile */
             }
             .header-image {
-                height: 150px;
+                height: 200px; /* Increased for mobile */
             }
         }
         @media (max-width: 480px) {
             #map {
                 height: 30vh;
                 width: 100%;
+                z-index: 1;
             }
             .video-container {
                 height: 30vh;
@@ -249,15 +271,27 @@
                 padding: 8px;
                 font-size: 1.1em;
             }
-            .tab {
-                display: none; /* Hide tabs on mobile */
+            .tabs {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+            }
+            .tabs.active {
+                display: flex;
+            }
+            .menu-toggle {
+                display: block;
+            }
+            #map {
+                z-index: 1; /* Ensure map is above canvas */
+                map.flyTo([40.7488, -73.9772], 14); /* Adjusted zoom for mobile */
             }
             .call-to-action {
                 padding: 8px;
                 font-size: 1.2em;
             }
             .header-image {
-                height: 150px;
+                height: 200px; /* Increased for mobile */
             }
         }
     </style>
@@ -271,6 +305,7 @@
         <p class="motivation" id="motivation"></p>
         <p class="countdown" id="countdown"></p>
     </div>
+    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
     <div class="tabs">
         <div class="tab" onclick="flyTo([40.7488, -73.9772])">Manifestación por Ferrer (NYC)</div>
         <div class="tab" onclick="flyTo([52.5170, 13.3889])">Protesta por Derechos Humanos (Berlín)</div>
@@ -313,13 +348,24 @@
 
     <script>
         // Inicializa el mapa centrado en NY
-        var map = L.map('map').setView([40.7488, -73.9772], 13);
+        var map = L.map('map').setView([40.7488, -73.9772], 13); // Default zoom for desktop
         var greenLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
         var satelliteLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
             attribution: 'Tiles © Esri — Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
         });
+
+        // Adjust map zoom for mobile
+        function adjustMapForMobile() {
+            if (window.innerWidth <= 767) {
+                map.setView([40.7488, -73.9772], 14); // Zoom 14 for mobile
+            } else {
+                map.setView([40.7488, -73.9772], 13); // Zoom 13 for desktop
+            }
+        }
+        window.addEventListener('resize', adjustMapForMobile);
+        adjustMapForMobile(); // Initial adjustment
 
         // Íconos personalizados por región
         var americaIcon = L.icon({
@@ -450,6 +496,7 @@
         window.addEventListener('resize', () => {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
+            adjustMapForMobile(); // Re-adjust map on resize
         });
 
         // Mensaje motivacional dinámico
@@ -485,6 +532,12 @@
         }
         updateCountdown();
         setInterval(updateCountdown, 1000);
+
+        // Mobile menu toggle
+        function toggleMenu() {
+            const tabs = document.querySelector('.tabs');
+            tabs.classList.toggle('active');
+        }
     </script>
 </body>
 </html>
