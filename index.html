@@ -27,6 +27,7 @@
             height: 100%;
             z-index: -1;
             pointer-events: none;
+            clip-path: polygon(0 0, 100% 0, 100% 40%, 0 40%); /* Clips stars above .map-video-container */
         }
         .header-image {
             background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Flag_of_Cuba.svg/1200px-Flag_of_Cuba.svg.png') no-repeat center 40%;
@@ -82,15 +83,7 @@
             transform: scale(1.05);
         }
         .menu-toggle {
-            display: none;
-            font-size: 1.5em;
-            color: white;
-            background: #cc0000;
-            border: none;
-            padding: 5px 10px;
-            cursor: pointer;
-            margin: 5px;
-            border-radius: 3px;
+            display: none; /* Removed from mobile */
         }
         .interactive {
             padding: 10px;
@@ -138,6 +131,7 @@
             justify-content: space-between;
             position: relative;
             z-index: 1;
+            background: #fff; /* Solid background to cover stars */
         }
         #map {
             width: 70%;
@@ -186,6 +180,9 @@
             .header-image {
                 height: 200px;
             }
+            .tabs {
+                display: flex; /* Show tabs on desktop */
+            }
         }
         @media (max-width: 767px) {
             #map {
@@ -216,24 +213,13 @@
                 font-size: 1.2em;
             }
             .tab {
-                font-size: 1.2em;
+                display: none; /* Hide tabs on mobile */
             }
             .call-to-action h3 {
                 font-size: 1.3em;
             }
             .header-image {
                 height: 150px;
-            }
-            .menu-toggle {
-                display: block;
-            }
-            .tabs {
-                display: none;
-                flex-direction: column;
-                width: 100%;
-            }
-            .tabs.active {
-                display: flex;
             }
         }
         @media (max-width: 480px) {
@@ -264,7 +250,7 @@
                 font-size: 1.1em;
             }
             .tab {
-                font-size: 1.1em;
+                display: none; /* Hide tabs on mobile */
             }
             .call-to-action {
                 padding: 8px;
@@ -272,17 +258,6 @@
             }
             .header-image {
                 height: 150px;
-            }
-            .menu-toggle {
-                display: block;
-            }
-            .tabs {
-                display: none;
-                flex-direction: column;
-                width: 100%;
-            }
-            .tabs.active {
-                display: flex;
             }
         }
     </style>
@@ -296,7 +271,6 @@
         <p class="motivation" id="motivation"></p>
         <p class="countdown" id="countdown"></p>
     </div>
-    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
     <div class="tabs">
         <div class="tab" onclick="flyTo([40.7488, -73.9772])">Manifestación por Ferrer (NYC)</div>
         <div class="tab" onclick="flyTo([52.5170, 13.3889])">Protesta por Derechos Humanos (Berlín)</div>
@@ -329,7 +303,7 @@
         <h3>¡Comparte esta causa por la libertad! Copia el enlace: <a href="https://freedom-libertad.github.io/cuba/" style="color: white; text-decoration: underline;">https://freedom-libertad.github.io/cuba/</a></h3>
         <div class="social-share">
             <a href="https://twitter.com/intent/tweet?url=https://freedom-libertad.github.io/cuba/&text=Únete%20al%2011J%20por%20la%20libertad%20en%20Cuba!%20%2311JPorLaLibertad" target="_blank"><i class="fab fa-twitter"></i></a>
-            <a href="https://www.facebook.com/sharer/sharer.php?u=https://freedom-libertad.github.io/cuba/&quote=Únete%20al%2011J%20por%20la%20libertad%20en%20Cuba!%20%2311JPorLaLibertad" target="_blank"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://www.facebook.com/sharer/sharer.php?u=https://freedom-libertad.github.io/cuba/"e=Únete%20al%2011J%20por%20la%20libertad%20en%20Cuba!%20%2311JPorLaLibertad" target="_blank"><i class="fab fa-facebook-f"></i></a>
             <a href="whatsapp://send?text=Únete%20al%2011J%20por%20la%20libertad%20en%20Cuba!%20%2311JPorLaLibertad%20https://freedom-libertad.github.io/cuba/" data-action="share/whatsapp" target="_blank"><i class="fab fa-whatsapp"></i></a>
         </div>
     </div>
@@ -511,12 +485,6 @@
         }
         updateCountdown();
         setInterval(updateCountdown, 1000);
-
-        // Mobile menu toggle
-        function toggleMenu() {
-            const tabs = document.querySelector('.tabs');
-            tabs.classList.toggle('active');
-        }
     </script>
 </body>
 </html>
