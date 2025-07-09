@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Asegura escalado correcto en móviles -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mapa Mundial En Apoyo Al 11J Por LA LIBERTAD DE TODOS Los Presos Políticos en las Cárceles de Cuba</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -14,11 +14,6 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-        }
-        #map {
-            height: 40vh;
-            width: 100%;
-            flex-grow: 1;
         }
         .info {
             padding: 15px;
@@ -62,87 +57,107 @@
             text-align: center;
         }
         video {
-            max-width: 100%;
-            height: auto;
+            width: 100%; /* Ocupa todo el ancho del contenedor */
+            height: 100%; /* Igual altura al contenedor */
+            object-fit: cover; /* Ajusta el video para llenar el espacio */
         }
-        img {
-            max-width: 100px;
-            height: auto;
+        .map-video-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        #map {
+            width: 70%;
+            height: 40vh;
+            flex-grow: 1;
+        }
+        .video-container {
+            width: 28%; /* Ajuste para dejar espacio al mapa */
+            height: 40vh; /* Igual altura al mapa en desktop */
         }
 
         /* Media Queries */
         @media (min-width: 768px) {
+            .map-video-container {
+                flex-wrap: nowrap;
+            }
             #map {
                 height: 50vh;
+                width: 75%;
             }
-            .tabs {
-                position: sticky;
-                top: 0;
-                z-index: 1000;
+            .video-container {
+                height: 50vh; /* Igual al mapa en desktop */
+                width: 23%;
             }
         }
         @media (max-width: 767px) {
             #map {
-                height: 25vh; /* Reducido a 25vh */
+                height: 25vh;
+                width: 100%;
+            }
+            .video-container {
+                height: 25vh; /* Igual al mapa en móviles */
+                width: 100%;
+                margin-bottom: 10px;
             }
             body {
-                font-size: 1.2em; /* Base mayor para todos los elementos */
+                font-size: 1.2em;
             }
             .info h1 {
-                font-size: 2em; /* Muy grande para móviles */
+                font-size: 2em;
             }
             .info p {
-                font-size: 1.3em; /* Más grande */
+                font-size: 1.3em;
             }
             .interactive h2 {
-                font-size: 1.5em; /* Más grande */
+                font-size: 1.5em;
             }
             .interactive input, .interactive button {
                 width: 80%;
                 margin: 5px 0;
                 padding: 10px;
-                font-size: 1.2em; /* Más grande */
+                font-size: 1.2em;
             }
             .tab {
-                font-size: 1.2em; /* Más grande */
+                font-size: 1.2em;
             }
             .call-to-action h3 {
-                font-size: 1.3em; /* Más grande */
-            }
-            video {
-                max-height: 200px;
+                font-size: 1.3em;
             }
         }
         @media (max-width: 480px) {
             #map {
-                height: 20vh; /* Reducido a 20vh */
+                height: 20vh;
+                width: 100%;
+            }
+            .video-container {
+                height: 20vh; /* Igual al mapa en móviles pequeños */
+                width: 100%;
+                margin-bottom: 10px;
             }
             body {
-                font-size: 1.1em; /* Base mayor */
+                font-size: 1.1em;
             }
             .info h1 {
-                font-size: 1.8em; /* Ajuste */
+                font-size: 1.8em;
             }
             .info p {
-                font-size: 1.2em; /* Ajuste */
+                font-size: 1.2em;
             }
             .interactive h2 {
-                font-size: 1.3em; /* Ajuste */
+                font-size: 1.3em;
             }
             .interactive input, .interactive button {
                 width: 90%;
                 padding: 8px;
-                font-size: 1.1em; /* Ajuste */
+                font-size: 1.1em;
             }
             .tab {
-                font-size: 1.1em; /* Ajuste */
+                font-size: 1.1em;
             }
             .call-to-action {
                 padding: 8px;
-                font-size: 1.2em; /* Ajuste */
-            }
-            video {
-                max-height: 150px;
+                font-size: 1.2em;
             }
         }
     </style>
@@ -161,13 +176,15 @@
         <div class="tab" onclick="flyTo([25.7652, -80.2455])">4to Aniversario del J11 (Miami)</div>
         <div class="tab" onclick="flyTo([25.7531, -80.2166])">Museo Diáspora Cubana (Miami)</div>
     </div>
-    <div id="map"></div>
-    <div class="video-container">
-        <h2>Video de Apoyo</h2>
-        <video controls autoplay>
-            <source src="videos/mi_video.mp4" type="video/mp4">
-            Tu navegador no soporta el tag de video.
-        </video>
+    <div class="map-video-container">
+        <div class="video-container">
+            <h2>Video de Apoyo</h2>
+            <video controls autoplay playsinline>
+                <source src="videos/mi_video.mp4" type="video/mp4">
+                Tu navegador no soporta el tag de video.
+            </video>
+        </div>
+        <div id="map"></div>
     </div>
     <div class="interactive">
         <h2>¿Quieres agregar una protesta?</h2>
