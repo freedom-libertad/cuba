@@ -10,7 +10,7 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f0f8ff;
+            background-color: #d0e3f5; /* Azul más oscuro */
             display: flex;
             flex-direction: column;
             min-height: 100vh;
@@ -59,7 +59,7 @@
         video {
             width: 100%;
             height: 100%;
-            object-fit: contain; /* Cambiado a 'contain' para mostrar todo el contenido */
+            object-fit: contain;
         }
         .map-video-container {
             display: flex;
@@ -68,12 +68,12 @@
         }
         #map {
             width: 70%;
-            height: 50vh; /* Aumentado a 50vh en desktop */
+            height: 50vh;
             flex-grow: 1;
         }
         .video-container {
             width: 28%;
-            height: 50vh; /* Aumentado a 50vh en desktop */
+            height: 50vh;
         }
 
         /* Media Queries */
@@ -92,11 +92,11 @@
         }
         @media (max-width: 767px) {
             #map {
-                height: 35vh; /* Aumentado a 35vh */
+                height: 35vh;
                 width: 100%;
             }
             .video-container {
-                height: 35vh; /* Aumentado a 35vh */
+                height: 35vh;
                 width: 100%;
                 margin-bottom: 10px;
             }
@@ -127,11 +127,11 @@
         }
         @media (max-width: 480px) {
             #map {
-                height: 30vh; /* Aumentado a 30vh */
+                height: 30vh;
                 width: 100%;
             }
             .video-container {
-                height: 30vh; /* Aumentado a 30vh */
+                height: 30vh;
                 width: 100%;
                 margin-bottom: 10px;
             }
@@ -178,7 +178,7 @@
     </div>
     <div class="map-video-container">
         <div class="video-container">
-            <video controls autoplay playsinline>
+            <video controls autoplay muted playsinline>
                 <source src="videos/mi_video.mp4" type="video/mp4">
                 Tu navegador no soporta el tag de video.
             </video>
@@ -200,8 +200,8 @@
     </div>
 
     <script>
-        // Inicializa el mapa
-        var map = L.map('map').setView([40.0, -20.0], 3);
+        // Inicializa el mapa centrado en NY
+        var map = L.map('map').setView([40.7488, -73.9772], 13);
         var greenLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
