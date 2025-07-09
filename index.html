@@ -2,9 +2,9 @@
 <html lang="es">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mapa Mundial En Apoyo Al 11J Por LA LIBERTAD DE TODOS Los Presos Políticos en las Cárceles de Cuba</title>
+    <title>Mapa Mundial En Apoyo AL 11J Por LA LIBERTAD DE TODOS Los Presos Políticos en las Cárceles de Cuba</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Roboto+Condensed&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <style>
@@ -29,9 +29,9 @@
             pointer-events: none;
         }
         .header-image {
-            background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Flag_of_Cuba.svg/1200px-Flag_of_Cuba.svg.png') no-repeat center;
+            background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Flag_of_Cuba.svg/1200px-Flag_of_Cuba.svg.png') no-repeat center 40%;
             background-size: cover;
-            height: 100px;
+            height: 150px;
             width: 100%;
         }
         .info {
@@ -44,6 +44,18 @@
         }
         .info h1 {
             font-size: 2.5em;
+        }
+        .motivation {
+            color: #cc0000;
+            font-size: 1.5em;
+            font-weight: bold;
+            font-family: 'Oswald', sans-serif;
+            margin-top: 10px;
+        }
+        .countdown {
+            color: #ff4d4d;
+            font-size: 1.2em;
+            margin-top: 5px;
         }
         .tabs {
             background: #ff4d4d;
@@ -68,6 +80,17 @@
         .tab:hover {
             background: #990000;
             transform: scale(1.05);
+        }
+        .menu-toggle {
+            display: none;
+            font-size: 1.5em;
+            color: white;
+            background: #cc0000;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            margin: 5px;
+            border-radius: 3px;
         }
         .interactive {
             padding: 10px;
@@ -133,6 +156,19 @@
             position: relative;
             z-index: 1;
         }
+        .leaflet-marker-icon {
+            transition: transform 0.3s ease;
+        }
+        .leaflet-marker-icon:hover {
+            transform: scale(1.5);
+        }
+        .footer {
+            padding: 10px;
+            text-align: center;
+            background: #e0e0e0;
+            margin-top: auto;
+            font-size: 0.9em;
+        }
 
         /* Media Queries */
         @media (min-width: 768px) {
@@ -148,7 +184,7 @@
                 width: 23%;
             }
             .header-image {
-                height: 150px;
+                height: 200px;
             }
         }
         @media (max-width: 767px) {
@@ -186,7 +222,18 @@
                 font-size: 1.3em;
             }
             .header-image {
-                height: 100px;
+                height: 150px;
+            }
+            .menu-toggle {
+                display: block;
+            }
+            .tabs {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+            }
+            .tabs.active {
+                display: flex;
             }
         }
         @media (max-width: 480px) {
@@ -224,7 +271,18 @@
                 font-size: 1.2em;
             }
             .header-image {
-                height: 80px;
+                height: 150px;
+            }
+            .menu-toggle {
+                display: block;
+            }
+            .tabs {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+            }
+            .tabs.active {
+                display: flex;
             }
         }
     </style>
@@ -233,12 +291,12 @@
     <canvas class="canvas-background" id="starCanvas"></canvas>
     <div class="header-image"></div>
     <div class="info">
-        <h1>Mapa Mundial En Apoyo Al 11J Por LA LIBERTAD DE TODOS Los Presos Políticos en las Cárceles de Cuba</h1>
+        <h1>Mapa Mundial En Apoyo AL 11J Por LA LIBERTAD DE TODOS Los Presos Políticos en las Cárceles de Cuba</h1>
         <p>Únete a las manifestaciones globales por la libertad. Explora las ubicaciones en el mapa interactivo.</p>
-        <a href="http://www.freecounterstat.com" target="_blank">
-            <img src="http://log.freecounterstat.com/private/freecounterstat.php?c=12345xyz" border="0" alt="free counter">
-        </a>
+        <p class="motivation" id="motivation"></p>
+        <p class="countdown" id="countdown"></p>
     </div>
+    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
     <div class="tabs">
         <div class="tab" onclick="flyTo([40.7488, -73.9772])">Manifestación por Ferrer (NYC)</div>
         <div class="tab" onclick="flyTo([52.5170, 13.3889])">Protesta por Derechos Humanos (Berlín)</div>
@@ -249,10 +307,11 @@
         <div class="tab" onclick="flyTo([59.9139, 10.7522])">Cuba Cambia (Oslo)</div>
         <div class="tab" onclick="flyTo([59.3252, 18.0711])">Mynttorget (Stockholm)</div>
         <div class="tab" onclick="flyTo([50.7357, 7.0982])">Vigilia contra el Olvido (Bonn)</div>
+        <div class="tab" onclick="flyTo([36.1442, -115.1539])">The Cuban Heritage Foundation (Las Vegas)</div>
     </div>
     <div class="map-video-container">
         <div class="video-container">
-            <video controls autoplay muted playsinline>
+            <video controls autoplay muted playsinline poster="https://via.placeholder.com/300x200?text=Protesta+11J">
                 <source src="videos/mi_video.mp4" type="video/mp4">
                 Tu navegador no soporta el tag de video.
             </video>
@@ -269,11 +328,13 @@
     <div class="call-to-action">
         <h3>¡Comparte esta causa por la libertad! Copia el enlace: <a href="https://freedom-libertad.github.io/cuba/" style="color: white; text-decoration: underline;">https://freedom-libertad.github.io/cuba/</a></h3>
         <div class="social-share">
-            <a href="https://twitter.com/intent/tweet?url=https://freedom-libertad.github.io/cuba/&text=Únete%20al%2011J%20por%20la%20libertad%20en%20Cuba!" target="_blank"><i class="fab fa-twitter"></i></a>
-            <a href="https://www.facebook.com/sharer/sharer.php?u=https://freedom-libertad.github.io/cuba/" target="_blank"><i class="fab fa-facebook-f"></i></a>
-            <a href="whatsapp://send?text=Únete%20al%2011J%20por%20la%20libertad%20en%20Cuba!%20https://freedom-libertad.github.io/cuba/" data-action="share/whatsapp" target="_blank"><i class="fab fa-whatsapp"></i></a>
+            <a href="https://twitter.com/intent/tweet?url=https://freedom-libertad.github.io/cuba/&text=Únete%20al%2011J%20por%20la%20libertad%20en%20Cuba!%20%2311JPorLaLibertad" target="_blank"><i class="fab fa-twitter"></i></a>
+            <a href="https://www.facebook.com/sharer/sharer.php?u=https://freedom-libertad.github.io/cuba/&quote=Únete%20al%2011J%20por%20la%20libertad%20en%20Cuba!%20%2311JPorLaLibertad" target="_blank"><i class="fab fa-facebook-f"></i></a>
+            <a href="whatsapp://send?text=Únete%20al%2011J%20por%20la%20libertad%20en%20Cuba!%20%2311JPorLaLibertad%20https://freedom-libertad.github.io/cuba/" data-action="share/whatsapp" target="_blank"><i class="fab fa-whatsapp"></i></a>
         </div>
-        <a href="mailto:contacto@libertad11j.org" style="color: white; text-decoration: underline;">Contáctanos</a>
+    </div>
+    <div class="footer">
+        <p>© 2025 Freedom Libertad | <a href="https://example.com/mission" style="color: #333; text-decoration: underline;">Nuestra Misión</a></p>
     </div>
 
     <script>
@@ -296,17 +357,58 @@
             iconSize: [20, 20]
         });
 
-        // Marcadores con bandera cubana
+        // Marcadores con bandera cubana y hover
         var markers = [
-            L.marker([40.7488, -73.9772], { icon: americaIcon }).bindPopup("<b>Manifestación por Ferrer</b><br>11 de julio de 2025, 6:00 p.m.<br>315 Lexington Ave, NYC<br>Organizada por Nueva York con UNPACU").addTo(map),
-            L.marker([52.5170, 13.3889], { icon: europeIcon }).bindPopup("<b>Protesta por los Derechos Humanos en Cuba</b><br>11 de julio de 2025, 13:00 - 16:00 Uhr<br>Auswärtiges Amt, Werderscher Markt 6, 10117, Berlín").addTo(map),
-            L.marker([38.9058, -77.0488], { icon: americaIcon }).bindPopup("<b>Vigilia Patria y Libertad</b><br>11 de julio de 2025, 7:00 p.m.<br>Embajada de Cuba, Washington D.C.").addTo(map),
-            L.marker([40.4192, -3.7038], { icon: europeIcon }).bindPopup("<b>11 de Julio MADRID - CUBA</b><br>11 de julio de 2025, 12:00 p.m. - 20:00 p.m.<br>Plaza Santo Domingo, Madrid, España").addTo(map),
-            L.marker([25.7652, -80.2455], { icon: americaIcon }).bindPopup("<b>4to Aniversario del J11</b><br>11 de julio de 2025<br>Versailles Restaurant, 3555 SW 8TH ST, Miami, 33135").addTo(map),
-            L.marker([25.7531, -80.2166], { icon: americaIcon }).bindPopup("<b>Museo Americano de la Diáspora Cubana</b><br>11 de julio de 2025, 11:00 a.m.<br>1200 Coral Way, Miami, FL").addTo(map),
-            L.marker([59.9139, 10.7522], { icon: europeIcon }).bindPopup("<b>Cuba Cambia</b><br>11 de julio de 2025, 4:00 p.m.<br>Oslo, Noruega").addTo(map),
-            L.marker([59.3252, 18.0711], { icon: europeIcon }).bindPopup("<b>Mynttorget</b><br>11 de julio de 2025, 6:00 p.m.<br>Stockholm, Suecia").addTo(map),
-            L.marker([50.7357, 7.0982], { icon: europeIcon }).bindPopup("<b>Vigilia contra el Olvido</b><br>11 de julio de 2025, 10:00 a.m.<br>Embajada de Cuba, Avenida Kennedy 22-24, 53175 Bonn, Alemania").addTo(map)
+            L.marker([40.7488, -73.9772], { icon: americaIcon }).bindPopup("<b>Manifestación por Ferrer</b><br>11 de julio de 2025, 6:00 p.m.<br>315 Lexington Ave, NYC<br>Organizada por Nueva York con UNPACU").on('mouseover', function (e) {
+                this.setIcon(L.icon({ iconUrl: 'https://flagcdn.com/h20/cu.png', iconSize: [25, 25] }));
+            }).on('mouseout', function (e) {
+                this.setIcon(americaIcon);
+            }).addTo(map),
+            L.marker([52.5170, 13.3889], { icon: europeIcon }).bindPopup("<b>Protesta por los Derechos Humanos en Cuba</b><br>11 de julio de 2025, 13:00 - 16:00 Uhr<br>Auswärtiges Amt, Werderscher Markt 6, 10117, Berlín").on('mouseover', function (e) {
+                this.setIcon(L.icon({ iconUrl: 'https://flagcdn.com/h20/eu.png', iconSize: [25, 25] }));
+            }).on('mouseout', function (e) {
+                this.setIcon(europeIcon);
+            }).addTo(map),
+            L.marker([38.9058, -77.0488], { icon: americaIcon }).bindPopup("<b>Vigilia Patria y Libertad</b><br>11 de julio de 2025, 7:00 p.m.<br>Embajada de Cuba, Washington D.C.").on('mouseover', function (e) {
+                this.setIcon(L.icon({ iconUrl: 'https://flagcdn.com/h20/cu.png', iconSize: [25, 25] }));
+            }).on('mouseout', function (e) {
+                this.setIcon(americaIcon);
+            }).addTo(map),
+            L.marker([40.4192, -3.7038], { icon: europeIcon }).bindPopup("<b>11 de Julio MADRID - CUBA</b><br>11 de julio de 2025, 12:00 p.m. - 20:00 p.m.<br>Plaza Santo Domingo, Madrid, España").on('mouseover', function (e) {
+                this.setIcon(L.icon({ iconUrl: 'https://flagcdn.com/h20/eu.png', iconSize: [25, 25] }));
+            }).on('mouseout', function (e) {
+                this.setIcon(europeIcon);
+            }).addTo(map),
+            L.marker([25.7652, -80.2455], { icon: americaIcon }).bindPopup("<b>4to Aniversario del J11</b><br>11 de julio de 2025<br>Versailles Restaurant, 3555 SW 8TH ST, Miami, 33135").on('mouseover', function (e) {
+                this.setIcon(L.icon({ iconUrl: 'https://flagcdn.com/h20/cu.png', iconSize: [25, 25] }));
+            }).on('mouseout', function (e) {
+                this.setIcon(americaIcon);
+            }).addTo(map),
+            L.marker([25.7531, -80.2166], { icon: americaIcon }).bindPopup("<b>Museo Americano de la Diáspora Cubana</b><br>11 de julio de 2025, 11:00 a.m.<br>1200 Coral Way, Miami, FL").on('mouseover', function (e) {
+                this.setIcon(L.icon({ iconUrl: 'https://flagcdn.com/h20/cu.png', iconSize: [25, 25] }));
+            }).on('mouseout', function (e) {
+                this.setIcon(americaIcon);
+            }).addTo(map),
+            L.marker([59.9139, 10.7522], { icon: europeIcon }).bindPopup("<b>Cuba Cambia</b><br>11 de julio de 2025, 4:00 p.m.<br>Oslo, Noruega").on('mouseover', function (e) {
+                this.setIcon(L.icon({ iconUrl: 'https://flagcdn.com/h20/eu.png', iconSize: [25, 25] }));
+            }).on('mouseout', function (e) {
+                this.setIcon(europeIcon);
+            }).addTo(map),
+            L.marker([59.3252, 18.0711], { icon: europeIcon }).bindPopup("<b>Mynttorget</b><br>11 de julio de 2025, 6:00 p.m.<br>Stockholm, Suecia").on('mouseover', function (e) {
+                this.setIcon(L.icon({ iconUrl: 'https://flagcdn.com/h20/eu.png', iconSize: [25, 25] }));
+            }).on('mouseout', function (e) {
+                this.setIcon(europeIcon);
+            }).addTo(map),
+            L.marker([50.7357, 7.0982], { icon: europeIcon }).bindPopup("<b>Vigilia contra el Olvido</b><br>11 de julio de 2025, 10:00 a.m.<br>Embajada de Cuba, Avenida Kennedy 22-24, 53175 Bonn, Alemania").on('mouseover', function (e) {
+                this.setIcon(L.icon({ iconUrl: 'https://flagcdn.com/h20/eu.png', iconSize: [25, 25] }));
+            }).on('mouseout', function (e) {
+                this.setIcon(europeIcon);
+            }).addTo(map),
+            L.marker([36.1442, -115.1539], { icon: americaIcon }).bindPopup("<b>The Cuban Heritage Foundation</b><br>11 de julio de 2025, 6:00 p.m.<br>2295E Sahara Avenue SUITE 202, Las Vegas, NV, 89104").on('mouseover', function (e) {
+                this.setIcon(L.icon({ iconUrl: 'https://flagcdn.com/h20/cu.png', iconSize: [25, 25] }));
+            }).on('mouseout', function (e) {
+                this.setIcon(americaIcon);
+            }).addTo(map)
         ];
 
         // Función para mover el mapa con transición
@@ -348,11 +450,11 @@
         canvas.height = window.innerHeight;
 
         const stars = [];
-        for (let i = 0; i < 100; i++) {
+        for (let i = 0; i < 200; i++) {
             stars.push({
                 x: Math.random() * canvas.width,
                 y: Math.random() * canvas.height,
-                radius: Math.random() * 2,
+                radius: Math.random() * 2 + 1,
                 opacity: Math.random()
             });
         }
@@ -375,6 +477,46 @@
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
         });
+
+        // Mensaje motivacional dinámico
+        const motivations = [
+            "¡La libertad está cerca!",
+            "¡Únete al cambio!",
+            "¡Tu voz cuenta para Cuba!",
+            "¡Juntos por el 11J!"
+        ];
+        let motivationIndex = 0;
+        const motivationElement = document.getElementById('motivation');
+        function updateMotivation() {
+            motivationElement.textContent = motivations[motivationIndex];
+            motivationIndex = (motivationIndex + 1) % motivations.length;
+        }
+        updateMotivation();
+        setInterval(updateMotivation, 5000);
+
+        // Countdown timer
+        const countdownElement = document.getElementById('countdown');
+        const targetDate = new Date("2025-07-11T00:00:00-04:00").getTime(); // EDT
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            countdownElement.textContent = `Tiempo restante: ${days}d ${hours}h ${minutes}m ${seconds}s`;
+            if (distance < 0) {
+                countdownElement.textContent = "¡Evento en curso!";
+            }
+        }
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+
+        // Mobile menu toggle
+        function toggleMenu() {
+            const tabs = document.querySelector('.tabs');
+            tabs.classList.toggle('active');
+        }
     </script>
 </body>
 </html>
