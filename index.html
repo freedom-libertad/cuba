@@ -5,16 +5,28 @@
     <title>Mapa Mundial En Apoyo Al 11J Por LA LIBERTAD DE TODOS Los Presos Políticos en las Cárceles de Cuba</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <style>
         body {
             font-family: 'Roboto Condensed', Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #d0e3f5;
+            background: #d0e3f5;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+        .canvas-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
         }
         .header-image {
             background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Flag_of_Cuba.svg/1200px-Flag_of_Cuba.svg.png') no-repeat center;
@@ -27,9 +39,11 @@
             background: #e0f7fa;
             text-align: center;
             word-wrap: break-word;
+            position: relative;
+            z-index: 1;
         }
         .info h1 {
-            font-size: 2.5em; /* Más audaz */
+            font-size: 2.5em;
         }
         .tabs {
             background: #ff4d4d;
@@ -37,7 +51,9 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            border: 2px solid #ff4d4d; /* Borde temático */
+            border: 2px solid #ff4d4d;
+            position: relative;
+            z-index: 1;
         }
         .tab {
             padding: 8px 12px;
@@ -47,14 +63,18 @@
             cursor: pointer;
             border-radius: 3px;
             font-size: 0.9em;
+            transition: transform 0.2s;
         }
         .tab:hover {
             background: #990000;
+            transform: scale(1.05);
         }
         .interactive {
             padding: 10px;
             text-align: center;
-            background: #fff5f5; /* Fondo claro rojo */
+            background: #fff5f5;
+            position: relative;
+            z-index: 1;
         }
         .call-to-action {
             padding: 10px;
@@ -63,13 +83,26 @@
             text-align: center;
             margin: 10px 0;
             border-radius: 3px;
+            position: relative;
+            z-index: 1;
         }
-        .call-to-action a:nth-child(2) {
-            margin-left: 10px;
+        .call-to-action a {
+            margin: 0 10px;
+            color: white;
+            text-decoration: underline;
+        }
+        .call-to-action .social-share {
+            margin-top: 5px;
+        }
+        .call-to-action .social-share a {
+            margin: 0 5px;
+            font-size: 1.2em;
         }
         .video-container {
             padding: 5px 10px;
             text-align: center;
+            position: relative;
+            z-index: 1;
         }
         video {
             width: 100%;
@@ -80,11 +113,14 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: space-between;
+            position: relative;
+            z-index: 1;
         }
         #map {
             width: 70%;
             height: 50vh;
             flex-grow: 1;
+            transition: opacity 0.5s;
         }
         .video-container {
             width: 28%;
@@ -94,6 +130,8 @@
             padding: 10px;
             text-align: center;
             font-size: 0.9em;
+            position: relative;
+            z-index: 1;
         }
 
         /* Media Queries */
@@ -192,11 +230,14 @@
     </style>
 </head>
 <body>
+    <canvas class="canvas-background" id="starCanvas"></canvas>
     <div class="header-image"></div>
     <div class="info">
         <h1>Mapa Mundial En Apoyo Al 11J Por LA LIBERTAD DE TODOS Los Presos Políticos en las Cárceles de Cuba</h1>
         <p>Únete a las manifestaciones globales por la libertad. Explora las ubicaciones en el mapa interactivo.</p>
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Flag_of_Cuba.svg/200px-Flag_of_Cuba.svg.png" alt="Bandera de Cuba">
+        <a href="http://www.freecounterstat.com" target="_blank">
+            <img src="http://log.freecounterstat.com/private/freecounterstat.php?c=12345xyz" border="0" alt="free counter">
+        </a>
     </div>
     <div class="tabs">
         <div class="tab" onclick="flyTo([40.7488, -73.9772])">Manifestación por Ferrer (NYC)</div>
@@ -227,6 +268,11 @@
     </div>
     <div class="call-to-action">
         <h3>¡Comparte esta causa por la libertad! Copia el enlace: <a href="https://freedom-libertad.github.io/cuba/" style="color: white; text-decoration: underline;">https://freedom-libertad.github.io/cuba/</a></h3>
+        <div class="social-share">
+            <a href="https://twitter.com/intent/tweet?url=https://freedom-libertad.github.io/cuba/&text=Únete%20al%2011J%20por%20la%20libertad%20en%20Cuba!" target="_blank"><i class="fab fa-twitter"></i></a>
+            <a href="https://www.facebook.com/sharer/sharer.php?u=https://freedom-libertad.github.io/cuba/" target="_blank"><i class="fab fa-facebook-f"></i></a>
+            <a href="whatsapp://send?text=Únete%20al%2011J%20por%20la%20libertad%20en%20Cuba!%20https://freedom-libertad.github.io/cuba/" data-action="share/whatsapp" target="_blank"><i class="fab fa-whatsapp"></i></a>
+        </div>
         <a href="mailto:contacto@libertad11j.org" style="color: white; text-decoration: underline;">Contáctanos</a>
     </div>
 
@@ -246,7 +292,7 @@
             iconSize: [20, 20]
         });
         var europeIcon = L.icon({
-            iconUrl: 'https://flagcdn.com/h20/eu.png', // Ícono de la UE como ejemplo
+            iconUrl: 'https://flagcdn.com/h20/eu.png',
             iconSize: [20, 20]
         });
 
@@ -263,9 +309,13 @@
             L.marker([50.7357, 7.0982], { icon: europeIcon }).bindPopup("<b>Vigilia contra el Olvido</b><br>11 de julio de 2025, 10:00 a.m.<br>Embajada de Cuba, Avenida Kennedy 22-24, 53175 Bonn, Alemania").addTo(map)
         ];
 
-        // Función para mover el mapa con zoom dinámico
+        // Función para mover el mapa con transición
         function flyTo(coords) {
-            map.flyTo(coords, 14); // Zoom nivel 14 para ciudades
+            map.flyTo(coords, 14, {
+                animate: true,
+                duration: 1.5,
+                easeLinearity: 0.3
+            });
             markers.forEach(marker => {
                 if (marker.getLatLng().equals(L.latLng(coords))) {
                     marker.openPopup();
@@ -290,6 +340,41 @@
                 satelliteLayer.addTo(map);
             }
         }
+
+        // Fondo animado con estrellas
+        const canvas = document.getElementById('starCanvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const stars = [];
+        for (let i = 0; i < 100; i++) {
+            stars.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                radius: Math.random() * 2,
+                opacity: Math.random()
+            });
+        }
+
+        function drawStars() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = 'white';
+            stars.forEach(star => {
+                ctx.globalAlpha = star.opacity;
+                ctx.beginPath();
+                ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+                ctx.fill();
+                star.opacity = Math.sin(Date.now() * 0.001 + star.x + star.y) * 0.5 + 0.5;
+            });
+            requestAnimationFrame(drawStars);
+        }
+        drawStars();
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
     </script>
 </body>
 </html>
