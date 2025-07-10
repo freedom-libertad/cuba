@@ -30,11 +30,10 @@
             clip-path: polygon(0 0, 100% 0, 100% 40%, 0 40%);
         }
         .header-image {
-            background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Flag_of_Cuba.svg/1200px-Flag_of_Cuba.svg.png') no-repeat center;
-            background-size: contain; /* Maintains 2:3 aspect ratio */
-            height: 280px;
-            width: 420px; /* 2:3 ratio of 280px height */
-            margin: 0 auto; /* Centers the fixed-width element */
+            background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Flag_of_Cuba.svg/1200px-Flag_of_Cuba.svg.png') no-repeat center center;
+            background-size: contain;
+            height: 300px;
+            width: 100%;
             background-color: #d0e3f5;
             position: relative;
         }
@@ -61,7 +60,7 @@
             font-size: 1.2em;
             margin-top: 5px;
         }
-        .country-filter, .search-button {
+        .country-filter, .search-button, .city-filter {
             margin-top: 10px;
             padding: 5px;
             font-size: 1em;
@@ -207,7 +206,6 @@
             }
             .header-image {
                 height: 330px;
-                width: 495px; /* 2:3 ratio of 330px height */
             }
             .tabs {
                 display: flex;
@@ -258,11 +256,9 @@
             }
             #map {
                 z-index: 1;
-                map.flyTo([40.7488, -73.9772], 14);
             }
             .header-image {
-                height: 280px;
-                width: 420px; /* 2:3 ratio of 280px height */
+                height: 300px;
             }
         }
         @media (max-width: 480px) {
@@ -306,15 +302,13 @@
             }
             #map {
                 z-index: 1;
-                map.flyTo([40.7488, -73.9772], 14);
             }
             .call-to-action {
                 padding: 8px;
                 font-size: 1.2em;
             }
             .header-image {
-                height: 280px;
-                width: 420px; /* 2:3 ratio of 280px height */
+                height: 300px;
             }
         }
     </style>
@@ -335,8 +329,24 @@
             <option value="Norway">Noruega</option>
             <option value="Sweden">Suecia</option>
             <option value="Cuba">Cuba</option>
+            <option value="Uruguay">Uruguay</option>
         </select>
         <button id="searchButton" class="search-button" onclick="zoomToCountry()">Buscar</button>
+        <select id="cityFilter" class="city-filter" onchange="filterByCity()">
+            <option value="all">Todas</option>
+            <option value="NYC">NYC</option>
+            <option value="Berlin">Berlín</option>
+            <option value="Washington D.C.">Washington D.C.</option>
+            <option value="Madrid">Madrid</option>
+            <option value="Miami">Miami</option>
+            <option value="Oslo">Oslo</option>
+            <option value="Stockholm">Stockholm</option>
+            <option value="Bonn">Bonn</option>
+            <option value="Las Vegas">Las Vegas</option>
+            <option value="Montevideo">Montevideo</option>
+            <option value="Bilbao">Bilbao</option>
+        </select>
+        <button id="searchCityButton" class="search-button" onclick="zoomToCity()">Buscar Ciudad</button>
     </div>
     <button class="menu-toggle" onclick="toggleMenu()">☰</button>
     <div class="tabs">
@@ -350,6 +360,8 @@
         <div class="tab" onclick="flyTo([59.3252, 18.0711])">Mynttorget (Stockholm)</div>
         <div class="tab" onclick="flyTo([50.7357, 7.0982])">Vigilia contra el Olvido (Bonn)</div>
         <div class="tab" onclick="flyTo([36.1442, -115.1539])">The Cuban Heritage Foundation (Las Vegas)</div>
+        <div class="tab" onclick="flyTo([-34.8972, -56.1778])">Montevideo, Uruguay</div>
+        <div class="tab" onclick="flyTo([43.2628, -3.6528])">Bilbao, Spain</div>
     </div>
     <div class="map-video-container">
         <div class="video-container">
@@ -371,7 +383,7 @@
         <h3>¡Comparte esta causa por la libertad! Copia el enlace: <a href="https://freedom-libertad.github.io/cuba/" style="color: white; text-decoration: underline;">https://freedom-libertad.github.io/cuba/</a></h3>
         <div class="social-share">
             <a href="https://twitter.com/intent/tweet?url=https://freedom-libertad.github.io/cuba/&text=Únete%20al%2011J%20por%20la%20libertad%20en%20Cuba!%20%2311JPorLaLibertad" target="_blank"><i class="fab fa-twitter"></i></a>
-            <a href="https://www.facebook.com/sharer/sharer.php?u=https://freedom-libertad.github.io/cuba/"e=Únete%20al%2011J%20por%20la%20libertad%20en%20Cuba!%20%2311JPorLaLibertad" target="_blank"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://www.facebook.com/sharer/sharer.php?u=https://freedom-libertad.github.io/cuba/&quote=Únete%20al%2011J%20por%20la%20libertad%20en%20Cuba!%20%2311JPorLaLibertad" target="_blank"><i class="fab fa-facebook-f"></i></a>
             <a href="whatsapp://send?text=Únete%20al%2011J%20por%20la%20libertad%20en%20Cuba!%20%2311JPorLaLibertad%20https://freedom-libertad.github.io/cuba/" data-action="share/whatsapp" target="_blank"><i class="fab fa-whatsapp"></i></a>
         </div>
     </div>
@@ -380,8 +392,8 @@
     </div>
 
     <script>
-        // Inicializa el mapa centrado en NY
-        var map = L.map('map').setView([40.7488, -73.9772], 13);
+        // Inicializa el mapa con zoom out para mostrar todas las localidades
+        var map = L.map('map');
         var greenLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
@@ -392,13 +404,12 @@
         // Adjust map zoom for mobile
         function adjustMapForMobile() {
             if (window.innerWidth <= 767) {
-                map.setView([40.7488, -73.9772], 14);
+                map.setView([0, 0], 2); // Initial global view for mobile
             } else {
-                map.setView([40.7488, -73.9772], 13);
+                map.setView([0, 0], 2); // Initial global view for desktop
             }
         }
         window.addEventListener('resize', adjustMapForMobile);
-        adjustMapForMobile();
 
         // Íconos personalizados por región
         var americaIcon = L.icon({
@@ -412,57 +423,74 @@
 
         // Marcadores con bandera cubana y hover
         var markers = [
-            L.marker([40.7488, -73.9772], { icon: americaIcon }).bindPopup("<b>Manifestación por Ferrer</b><br>11 de julio de 2025, 6:00 p.m.<br>315 Lexington Ave, NYC<br>Organizada por Nueva York con UNPACU<br>País: USA").on('mouseover', function (e) {
+            L.marker([40.7488, -73.9772], { icon: americaIcon }).bindPopup("<b>Manifestación por Ferrer</b><br>11 de julio de 2025, 6:00 p.m.<br>315 Lexington Ave, NYC<br>Organizada por Nueva York con UNPACU<br>País: USA<br>Ciudad: NYC").on('mouseover', function (e) {
                 this.setIcon(L.icon({ iconUrl: 'https://flagcdn.com/h20/cu.png', iconSize: [25, 25] }));
             }).on('mouseout', function (e) {
                 this.setIcon(americaIcon);
-            }).addTo(map),
-            L.marker([52.5170, 13.3889], { icon: europeIcon }).bindPopup("<b>Protesta por los Derechos Humanos en Cuba</b><br>11 de julio de 2025, 13:00 - 16:00 Uhr<br>Auswärtiges Amt, Werderscher Markt 6, 10117, Berlín<br>País: Germany").on('mouseover', function (e) {
+            }),
+            L.marker([52.5170, 13.3889], { icon: europeIcon }).bindPopup("<b>Protesta por los Derechos Humanos en Cuba</b><br>11 de julio de 2025, 13:00 - 16:00 Uhr<br>Auswärtiges Amt, Werderscher Markt 6, 10117, Berlín<br>País: Germany<br>Ciudad: Berlin").on('mouseover', function (e) {
                 this.setIcon(L.icon({ iconUrl: 'https://flagcdn.com/h20/eu.png', iconSize: [25, 25] }));
             }).on('mouseout', function (e) {
                 this.setIcon(europeIcon);
-            }).addTo(map),
-            L.marker([38.9058, -77.0488], { icon: americaIcon }).bindPopup("<b>Vigilia Patria y Libertad</b><br>11 de julio de 2025, 7:00 p.m.<br>Embajada de Cuba, Washington D.C.<br>País: USA").on('mouseover', function (e) {
+            }),
+            L.marker([38.9058, -77.0488], { icon: americaIcon }).bindPopup("<b>Vigilia Patria y Libertad</b><br>11 de julio de 2025, 7:00 p.m.<br>Embajada de Cuba, Washington D.C.<br>País: USA<br>Ciudad: Washington D.C.").on('mouseover', function (e) {
                 this.setIcon(L.icon({ iconUrl: 'https://flagcdn.com/h20/cu.png', iconSize: [25, 25] }));
             }).on('mouseout', function (e) {
                 this.setIcon(americaIcon);
-            }).addTo(map),
-            L.marker([40.4192, -3.7038], { icon: europeIcon }).bindPopup("<b>11 de Julio MADRID - CUBA</b><br>11 de julio de 2025, 12:00 p.m. - 20:00 p.m.<br>Plaza Santo Domingo, Madrid, España<br>País: Spain").on('mouseover', function (e) {
+            }),
+            L.marker([40.4192, -3.7038], { icon: europeIcon }).bindPopup("<b>11 de Julio MADRID - CUBA</b><br>11 de julio de 2025, 12:00 p.m. - 20:00 p.m.<br>Plaza Santo Domingo, Madrid, España<br>País: Spain<br>Ciudad: Madrid").on('mouseover', function (e) {
                 this.setIcon(L.icon({ iconUrl: 'https://flagcdn.com/h20/eu.png', iconSize: [25, 25] }));
             }).on('mouseout', function (e) {
                 this.setIcon(europeIcon);
-            }).addTo(map),
-            L.marker([25.7652, -80.2455], { icon: americaIcon }).bindPopup("<b>4to Aniversario del J11</b><br>11 de julio de 2025<br>Versailles Restaurant, 3555 SW 8TH ST, Miami, 33135<br>País: USA").on('mouseover', function (e) {
+            }),
+            L.marker([25.7652, -80.2455], { icon: americaIcon }).bindPopup("<b>4to Aniversario del J11</b><br>11 de julio de 2025, 6:00 p.m.<br>Versailles Restaurant, 3555 SW 8TH ST, Miami, 33135<br>País: USA<br>Ciudad: Miami").on('mouseover', function (e) {
                 this.setIcon(L.icon({ iconUrl: 'https://flagcdn.com/h20/cu.png', iconSize: [25, 25] }));
             }).on('mouseout', function (e) {
                 this.setIcon(americaIcon);
-            }).addTo(map),
-            L.marker([25.7531, -80.2166], { icon: americaIcon }).bindPopup("<b>Museo Americano de la Diáspora Cubana</b><br>11 de julio de 2025, 11:00 a.m.<br>1200 Coral Way, Miami, FL<br>País: USA").on('mouseover', function (e) {
+            }),
+            L.marker([25.7531, -80.2166], { icon: americaIcon }).bindPopup("<b>Museo Americano de la Diáspora Cubana</b><br>11 de julio de 2025, 11:00 a.m.<br>1200 Coral Way, Miami, FL<br>País: USA<br>Ciudad: Miami").on('mouseover', function (e) {
                 this.setIcon(L.icon({ iconUrl: 'https://flagcdn.com/h20/cu.png', iconSize: [25, 25] }));
             }).on('mouseout', function (e) {
                 this.setIcon(americaIcon);
-            }).addTo(map),
-            L.marker([59.9139, 10.7522], { icon: europeIcon }).bindPopup("<b>Cuba Cambia</b><br>11 de julio de 2025, 4:00 p.m.<br>Oslo, Noruega<br>País: Norway").on('mouseover', function (e) {
+            }),
+            L.marker([59.9139, 10.7522], { icon: europeIcon }).bindPopup("<b>Cuba Cambia</b><br>11 de julio de 2025, 4:00 p.m.<br>Oslo, Noruega<br>País: Norway<br>Ciudad: Oslo").on('mouseover', function (e) {
                 this.setIcon(L.icon({ iconUrl: 'https://flagcdn.com/h20/eu.png', iconSize: [25, 25] }));
             }).on('mouseout', function (e) {
                 this.setIcon(europeIcon);
-            }).addTo(map),
-            L.marker([59.3252, 18.0711], { icon: europeIcon }).bindPopup("<b>Mynttorget</b><br>11 de julio de 2025, 6:00 p.m.<br>Stockholm, Suecia<br>País: Sweden").on('mouseover', function (e) {
+            }),
+            L.marker([59.3252, 18.0711], { icon: europeIcon }).bindPopup("<b>Mynttorget</b><br>11 de julio de 2025, 6:00 p.m.<br>Stockholm, Suecia<br>País: Sweden<br>Ciudad: Stockholm").on('mouseover', function (e) {
                 this.setIcon(L.icon({ iconUrl: 'https://flagcdn.com/h20/eu.png', iconSize: [25, 25] }));
             }).on('mouseout', function (e) {
                 this.setIcon(europeIcon);
-            }).addTo(map),
-            L.marker([50.7357, 7.0982], { icon: europeIcon }).bindPopup("<b>Vigilia contra el Olvido</b><br>11 de julio de 2025, 10:00 a.m.<br>Embajada de Cuba, Avenida Kennedy 22-24, 53175 Bonn, Alemania<br>País: Germany").on('mouseover', function (e) {
+            }),
+            L.marker([50.7357, 7.0982], { icon: europeIcon }).bindPopup("<b>Vigilia contra el Olvido</b><br>11 de julio de 2025, 10:00 a.m.<br>Embajada de Cuba, Avenida Kennedy 22-24, 53175 Bonn, Alemania<br>País: Germany<br>Ciudad: Bonn").on('mouseover', function (e) {
                 this.setIcon(L.icon({ iconUrl: 'https://flagcdn.com/h20/eu.png', iconSize: [25, 25] }));
             }).on('mouseout', function (e) {
                 this.setIcon(europeIcon);
-            }).addTo(map),
-            L.marker([36.1442, -115.1539], { icon: americaIcon }).bindPopup("<b>The Cuban Heritage Foundation</b><br>11 de julio de 2025, 6:00 p.m.<br>2295E Sahara Avenue SUITE 202, Las Vegas, NV, 89104<br>País: USA").on('mouseover', function (e) {
+            }),
+            L.marker([36.1442, -115.1539], { icon: americaIcon }).bindPopup("<b>The Cuban Heritage Foundation</b><br>11 de julio de 2025, 6:00 p.m.<br>2295E Sahara Avenue SUITE 202, Las Vegas, NV, 89104<br>País: USA<br>Ciudad: Las Vegas").on('mouseover', function (e) {
                 this.setIcon(L.icon({ iconUrl: 'https://flagcdn.com/h20/cu.png', iconSize: [25, 25] }));
             }).on('mouseout', function (e) {
                 this.setIcon(americaIcon);
-            }).addTo(map)
+            }),
+            L.marker([-34.8972, -56.1778], { icon: americaIcon }).bindPopup("<b>Montevideo, Uruguay</b><br>Sabado 12 de Julio, 15:00<br>Av Americo Ricardoni y Av Francisco Soca<br>País: Uruguay<br>Ciudad: Montevideo").on('mouseover', function (e) {
+                this.setIcon(L.icon({ iconUrl: 'https://flagcdn.com/h20/cu.png', iconSize: [25, 25] }));
+            }).on('mouseout', function (e) {
+                this.setIcon(americaIcon);
+            }),
+            L.marker([43.2628, -3.6528], { icon: europeIcon }).bindPopup("<b>Bilbao, Spain</b><br>Sabado 12 de Julio, 11:00 AM<br>Arenal<br>País: Spain<br>Ciudad: Bilbao").on('mouseover', function (e) {
+                this.setIcon(L.icon({ iconUrl: 'https://flagcdn.com/h20/eu.png', iconSize: [25, 25] }));
+            }).on('mouseout', function (e) {
+                this.setIcon(europeIcon);
+            })
         ];
+
+        // Agregar marcadores al mapa
+        markers.forEach(marker => marker.addTo(map));
+
+        // Ajustar el mapa para mostrar todas las localidades al cargar
+        var bounds = L.latLngBounds(markers.map(marker => marker.getLatLng()));
+        map.fitBounds(bounds, { padding: [50, 50], maxZoom: 3 });
 
         // Función para mover el mapa con transición
         function flyTo(coords) {
@@ -500,6 +528,21 @@
             });
         }
 
+        // Función para filtrar marcadores por ciudad
+        function filterByCity() {
+            var filter = document.getElementById("cityFilter").value;
+            markers.forEach(marker => {
+                var popupContent = marker.getPopup().getContent();
+                var city = popupContent.match(/Ciudad: (\w+(?:\s\w+)?)/i);
+                city = city ? city[1] : null;
+                if (filter === "all" || (city && city === filter)) {
+                    marker.addTo(map);
+                } else {
+                    map.removeLayer(marker);
+                }
+            });
+        }
+
         // Función para hacer zoom al país seleccionado
         function zoomToCountry() {
             var filter = document.getElementById("countryFilter").value;
@@ -521,8 +564,30 @@
             }
         }
 
-        // Inicializar filtro al cargar
+        // Función para hacer zoom a la ciudad seleccionada
+        function zoomToCity() {
+            var filter = document.getElementById("cityFilter").value;
+            if (filter !== "all") {
+                markers.forEach(marker => {
+                    var popupContent = marker.getPopup().getContent();
+                    var city = popupContent.match(/Ciudad: (\w+(?:\s\w+)?)/i);
+                    city = city ? city[1] : null;
+                    if (city && city === filter) {
+                        map.flyTo(marker.getLatLng(), 14, {
+                            animate: true,
+                            duration: 1.5,
+                            easeLinearity: 0.3
+                        });
+                        marker.openPopup();
+                        return; // Zoom to the first match
+                    }
+                });
+            }
+        }
+
+        // Inicializar filtros al cargar
         filterByCountry();
+        filterByCity();
 
         // Cambiar capas
         function changeLayer(layerType) {
@@ -569,6 +634,8 @@
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
             adjustMapForMobile();
+            var bounds = L.latLngBounds(markers.map(marker => marker.getLatLng()));
+            map.fitBounds(bounds, { padding: [50, 50], maxZoom: 3 });
         });
 
         // Mensaje motivacional dinámico
