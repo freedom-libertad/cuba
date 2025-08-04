@@ -425,8 +425,11 @@
         align-items: center;
     }
     #clock .clock-label {
-        font-size: 0.8em; /* Smaller font for static labels (Años, Días, etc.) */
-    }
+font-size: 0.7em; /* Further reduced font size */
+        vertical-align: middle; /* Align with numbers */
+        margin-right: 8px; /* Consistent spacing */
+        }
+}
     .top-clock-container h2 {
         font-size: 1.8em;
     }
@@ -516,7 +519,11 @@
         font-size: 1.5em;
     }
     #clock .clock-label {
-        font-size: 0.7em; /* Even smaller font for static labels on smaller screens */
+        font-size: 0.6em; /* Further reduced font size */
+        vertical-align: middle; /* Align with numbers */
+        margin-right: 6px; /* Slightly smaller spacing for smaller screens */
+    }
+}
     }
     .top-clock-container h2 {
         font-size: 1.5em;
@@ -569,7 +576,7 @@
             <img src="https://flagcdn.com/h20/cu.png" alt="Cuban Flag" style="width: 30px; height: 20px; vertical-align: middle; margin-left: 10px;">
         </h2>
         <h3>Desde 1 de Enero, 1959</h3>
-        <div id="clock">
+       <div id="clock">
     <span class="time-unit" id="years">0</span> <span class="clock-label">Años</span>
     <span class="time-unit" id="days">0</span> <span class="clock-label">Días</span>
     <span class="time-unit" id="hours">0</span> <span class="clock-label">Horas</span>
@@ -1019,6 +1026,7 @@
     </script>
 </body>
 </html>
+
 
 
 
