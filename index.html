@@ -226,7 +226,9 @@
             color: #ff0000;
             border: 5px solid #333;
             padding: 15px;
-            display: inline-block;
+            display: flex; /* Changed to flex for line breaks */
+            flex-wrap: wrap; /* Allow wrapping */
+            justify-content: center;
             box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
             letter-spacing: 3px;
             text-align: center;
@@ -235,7 +237,7 @@
             display: inline-block;
             min-width: 80px;
             text-align: right;
-            margin-right: 10px; /* Added for spacing control */
+            margin-right: 10px;
         }
         #current-date {
             font-family: 'Segment7', monospace;
@@ -324,13 +326,34 @@
             }
             #clock {
                 font-size: 1.8em;
+                flex-direction: row; /* Ensure row layout */
+                flex-wrap: wrap; /* Allow wrapping */
+                justify-content: center;
             }
             #current-date {
                 font-size: 1.1em;
             }
             .time-unit {
-                min-width: 50px; /* Reduced for mobile */
-                margin-right: 5px; /* Tighter spacing */
+                min-width: 50px;
+                margin-right: 5px;
+            }
+            .time-unit:nth-child(1), .time-unit:nth-child(2) {
+                /* Years and Days stay on the same line */
+                flex: 0 0 auto;
+            }
+            .time-unit:nth-child(3) {
+                /* Hours starts a new line */
+                flex: 0 0 100%; /* Full width to force line break */
+                margin-top: 5px;
+            }
+            .time-unit:nth-child(4) {
+                /* Minutes stays with Hours */
+                flex: 0 0 auto;
+            }
+            .time-unit:nth-child(5) {
+                /* Seconds starts a new line */
+                flex: 0 0 100%; /* Full width to force line break */
+                margin-top: 5px;
             }
         }
         @media (max-width: 480px) {
@@ -389,8 +412,22 @@
                 font-size: 1em;
             }
             .time-unit {
-                min-width: 45px; /* Further reduced for very small screens */
-                margin-right: 3px; /* Even tighter spacing */
+                min-width: 45px;
+                margin-right: 3px;
+            }
+            .time-unit:nth-child(1), .time-unit:nth-child(2) {
+                flex: 0 0 auto;
+            }
+            .time-unit:nth-child(3) {
+                flex: 0 0 100%;
+                margin-top: 5px;
+            }
+            .time-unit:nth-child(4) {
+                flex: 0 0 auto;
+            }
+            .time-unit:nth-child(5) {
+                flex: 0 0 100%;
+                margin-top: 5px;
             }
         }
     </style>
