@@ -372,199 +372,202 @@
                 font-size: 2em;
             }
         }
-@media (max-width: 767px) {
-    /* Existing styles unchanged */
-    #map {
-        height: 45vh;
-        width: 100%;
-        z-index: 1;
-    }
-    .video-container {
-        height: 45vh;
-        width: 100%;
-        margin-bottom: 10px;
-    }
-    body {
-        font-size: 1.2em;
-    }
-    .info h1 {
-        font-size: 2em;
-        text-transform: uppercase; /* Make Mapa Mundial all caps */
-    }
-    .info p {
-        font-size: 1.3em;
-    }
-    .interactive h2 {
-        font-size: 1.5em;
-    }
-    .interactive input, .interactive button {
-        width: 80%;
-        margin: 5px 0;
-        padding: 10px;
-        font-size: 1.2em;
-    }
-    .tabs {
-        display: none;
-        flex-direction: column;
-        width: 100%;
-    }
-    .tabs.active {
-        display: flex;
-    }
-    .menu-toggle {
-        display: block;
-    }
-    #map {
-        z-index: 1;
-    }
-    #clock {
-        font-size: 1.8em;
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: center;
-        align-items: center;
-    }
-    #clock .clock-label {
-font-size: 0.5em; /* Further reduced font size */
-        vertical-align: middle; /* Align with numbers */
-        margin-right: 4px; /* Consistent spacing */
+        @media (max-width: 767px) {
+            #map {
+                height: 45vh;
+                width: 100%;
+                z-index: 1;
+            }
+            .video-container {
+                height: 45vh;
+                width: 100%;
+                margin-bottom: 10px;
+            }
+            body {
+                font-size: 1.2em;
+            }
+            .info h1 {
+                font-size: 2em;
+                text-transform: uppercase; /* Make Mapa Mundial all caps */
+            }
+            .info p {
+                font-size: 1.3em;
+            }
+            .interactive h2 {
+                font-size: 1.5em;
+            }
+            .interactive input, .interactive button {
+                width: 80%;
+                margin: 5px 0;
+                padding: 10px;
+                font-size: 1.2em;
+            }
+            .tabs {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+            }
+            .tabs.active {
+                display: flex;
+            }
+            .menu-toggle {
+                display: block;
+            }
+            #map {
+                z-index: 1;
+            }
+            #clock {
+                font-size: 1.8em;
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: center;
+                align-items: center;
+                gap: 5px; /* Tighter spacing for mobile */
+                padding: 10px; /* Reduced padding */
+            }
+            #clock .clock-label {
+                font-size: 0.6em; /* Further reduced font size */
+                vertical-align: middle; /* Align with numbers */
+                margin-right: 6px; /* Reduced spacing */
+            }
+            .top-clock-container h2 {
+                font-size: 1.8em;
+            }
+            .top-clock-container h3 {
+                font-size: 1.1em;
+            }
+            #current-date {
+                font-size: 1.1em;
+            }
+            .time-unit {
+                min-width: 45px;
+                margin-right: 5px;
+                text-align: center;
+            }
+            .time-unit:nth-child(1), .time-unit:nth-child(2) {
+                flex: 0 0 auto;
+            }
+            .time-unit:nth-child(3) {
+                flex: 0 0 100%;
+                margin-top: 5px;
+                text-align: center;
+            }
+            .time-unit:nth-child(4) {
+                flex: 0 0 auto;
+            }
+            .time-unit:nth-child(5) {
+                flex: 0 0 100%;
+                margin-top: 5px;
+                text-align: center;
+            }
+            .economic-metric {
+                width: 160px;
+            }
+            .economic-metric p {
+                font-size: 1em;
+            }
+            .info p.motivation {
+                font-size: 1.8em; /* Slightly smaller for mobile */
+            }
         }
-}
-    .top-clock-container h2 {
-        font-size: 1.8em;
-    }
-    .top-clock-container h3 {
-        font-size: 1.1em;
-    }
-    #current-date {
-        font-size: 1.1em;
-    }
-    .time-unit {
-        min-width: 45px;
-        margin-right: 5px;
-        text-align: center;
-    }
-    .time-unit:nth-child(1), .time-unit:nth-child(2) {
-        flex: 0 0 auto;
-    }
-    .time-unit:nth-child(3) {
-        flex: 0 0 100%;
-        margin-top: 5px;
-        text-align: center;
-    }
-    .time-unit:nth-child(4) {
-        flex: 0 0 auto;
-    }
-    .time-unit:nth-child(5) {
-        flex: 0 0 100%;
-        margin-top: 5px;
-        text-align: center;
-    }
-    .economic-metric {
-        width: 160px;
-    }
-    .economic-metric p {
-        font-size: 1em;
-    }
-    .info p.motivation {
-        font-size: 1.8em; /* Slightly smaller for mobile */
-    }
-}
-      @media (max-width: 480px) {
-    /* Existing styles unchanged */
-    #map {
-        height: 45vh;
-        width: 100%;
-        z-index: 1;
-    }
-    .video-container {
-        height: 45vh;
-        width: 100%;
-        margin-bottom: 10px;
-    }
-    body {
-        font-size: 1.1em;
-    }
-    .info h1 {
-        font-size: 1.6em; /* Smaller font size */
-        text-transform: uppercase; /* Make Mapa Mundial all caps */
-    }
-    .info p {
-        font-size: 1.2em;
-    }
-    .interactive h2 {
-        font-size: 1.3em;
-    }
-    .interactive input, .interactive button {
-        width: 90%;
-        padding: 8px;
-        font-size: 1.1em;
-    }
-    .tabs {
-        display: none;
-        flex-direction: column;
-        width: 100%;
-    }
-    .tabs.active {
-        display: flex;
-    }
-    .menu-toggle {
-        display: block;
-    }
-    .call-to-action {
-        padding: 8px;
-        font-size: 1.2em;
-    }
-    #clock {
-        font-size: 1.5em;
-    }
-    #clock .clock-label {
-        font-size: 0.4em; /* Further reduced font size */
-        vertical-align: middle; /* Align with numbers */
-        margin-right: 2px; /* Slightly smaller spacing for smaller screens */
-    }
-}
-    }
-    .top-clock-container h2 {
-        font-size: 1.5em;
-    }
-    .top-clock-container h3 {
-        font-size: 1em;
-    }
-    #current-date {
-        font-size: 1em;
-    }
-    .time-unit {
-        min-width: 40px;
-        margin-right: 3px;
-        text-align: center;
-    }
-    .time-unit:nth-child(1), .time-unit:nth-child(2) {
-        flex: 0 0 auto;
-    }
-    .time-unit:nth-child(3) {
-        flex: 0 0 100%;
-        margin-top: 5px;
-        text-align: center;
-    }
-    .time-unit:nth-child(4) {
-        flex: 0 0 auto;
-    }
-    .time-unit:nth-child(5) {
-        flex: 0 0 100%;
-        margin-top: 5px;
-        text-align: center;
-    }
-    .economic-metric {
-        width: 140px;
-    }
-    .economic-metric p {
-        font-size: 0.9em;
-    }
-    .info p.motivation {
-        font-size: 1.6em; /* Slightly smaller for smaller screens */
-    }
-}
+        @media (max-width: 480px) {
+            #map {
+                height: 45vh;
+                width: 100%;
+                z-index: 1;
+            }
+            .video-container {
+                height: 45vh;
+                width: 100%;
+                margin-bottom: 10px;
+            }
+            body {
+                font-size: 1.1em;
+            }
+            .info h1 {
+                font-size: 1.6em; /* Smaller font size */
+                text-transform: uppercase; /* Make Mapa Mundial all caps */
+            }
+            .info p {
+                font-size: 1.2em;
+            }
+            .interactive h2 {
+                font-size: 1.3em;
+            }
+            .interactive input, .interactive button {
+                width: 90%;
+                padding: 8px;
+                font-size: 1.1em;
+            }
+            .tabs {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+            }
+            .tabs.active {
+                display: flex;
+            }
+            .menu-toggle {
+                display: block;
+            }
+            .call-to-action {
+                padding: 8px;
+                font-size: 1.2em;
+            }
+            #clock {
+                font-size: 1.5em;
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: center;
+                align-items: center;
+                gap: 4px; /* Even tighter spacing for smaller screens */
+                padding: 8px; /* Further reduced padding */
+            }
+            #clock .clock-label {
+                font-size: 0.5em; /* Even smaller font for labels */
+                vertical-align: middle; /* Align with numbers */
+                margin-right: 4px; /* Minimal spacing */
+            }
+            .top-clock-container h2 {
+                font-size: 1.5em;
+            }
+            .top-clock-container h3 {
+                font-size: 1em;
+            }
+            #current-date {
+                font-size: 1em;
+            }
+            .time-unit {
+                min-width: 40px;
+                margin-right: 3px;
+                text-align: center;
+            }
+            .time-unit:nth-child(1), .time-unit:nth-child(2) {
+                flex: 0 0 auto;
+            }
+            .time-unit:nth-child(3) {
+                flex: 0 0 100%;
+                margin-top: 5px;
+                text-align: center;
+            }
+            .time-unit:nth-child(4) {
+                flex: 0 0 auto;
+            }
+            .time-unit:nth-child(5) {
+                flex: 0 0 100%;
+                margin-top: 5px;
+                text-align: center;
+            }
+            .economic-metric {
+                width: 140px;
+            }
+            .economic-metric p {
+                font-size: 0.9em;
+            }
+            .info p.motivation {
+                font-size: 1.6em; /* Slightly smaller for smaller screens */
+            }
+        }
     </style>
 </head>
 <body>
@@ -576,13 +579,13 @@ font-size: 0.5em; /* Further reduced font size */
             <img src="https://flagcdn.com/h20/cu.png" alt="Cuban Flag" style="width: 30px; height: 20px; vertical-align: middle; margin-left: 10px;">
         </h2>
         <h3>Desde 1 de Enero, 1959</h3>
-       <div id="clock">
-    <span class="time-unit" id="years">0</span> <span class="clock-label">Años</span>
-    <span class="time-unit" id="days">0</span> <span class="clock-label">Días</span>
-    <span class="time-unit" id="hours">0</span> <span class="clock-label">Horas</span>
-    <span class="time-unit" id="minutes">0</span> <span class="clock-label">Minutos</span>
-    <span class="time-unit" id="seconds">0</span> <span class="clock-label">Segundos</span>
-</div>
+        <div id="clock">
+            <span class="time-unit" id="years">0</span> <span class="clock-label">Años</span>
+            <span class="time-unit" id="days">0</span> <span class="clock-label">Días</span>
+            <span class="time-unit" id="hours">0</span> <span class="clock-label">Horas</span>
+            <span class="time-unit" id="minutes">0</span> <span class="clock-label">Minutos</span>
+            <span class="time-unit" id="seconds">0</span> <span class="clock-label">Segundos</span>
+        </div>
         <div id="current-date">Fecha: <span id="date-display">0</span></div>
     </div>
     <div class="info">
@@ -1026,8 +1029,3 @@ font-size: 0.5em; /* Further reduced font size */
     </script>
 </body>
 </html>
-
-
-
-
-
