@@ -230,14 +230,14 @@
             flex-wrap: wrap;
             justify-content: center;
             box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
-            letter-spacing: 1px; /* Reduced for tighter text */
+            letter-spacing: 1px;
             text-align: center;
         }
         .time-unit {
             display: inline-block;
             min-width: 80px;
             text-align: right;
-            margin-right: 8px; /* Reduced for tighter spacing */
+            margin-right: 8px;
         }
         #current-date {
             font-family: 'Segment7', monospace;
@@ -276,6 +276,21 @@
             .time-unit {
                 min-width: 80px;
                 margin-right: 8px;
+            }
+            .time-unit#years::after {
+                content: " Años";
+            }
+            .time-unit#days::after {
+                content: " Días";
+            }
+            .time-unit#hours::after {
+                content: " Horas";
+            }
+            .time-unit#minutes::after {
+                content: " Minutos";
+            }
+            .time-unit#seconds::after {
+                content: " Segundos";
             }
         }
         @media (max-width: 767px) {
@@ -329,31 +344,51 @@
                 flex-direction: row;
                 flex-wrap: wrap;
                 justify-content: center;
-                align-items: center; /* Center items vertically */
+                align-items: center;
             }
             #current-date {
                 font-size: 1.1em;
             }
             .time-unit {
-                min-width: 45px; /* Tighter for mobile */
-                margin-right: 5px; /* Tighter spacing */
-                text-align: center; /* Center text for better alignment */
-            }
-            .time-unit:nth-child(1), .time-unit:nth-child(2) {
-                flex: 0 0 auto; /* Years and Days on same line */
-            }
-            .time-unit:nth-child(3) {
-                flex: 0 0 100%; /* Hours starts new line */
-                margin-top: 5px;
+                min-width: 40px; /* Tighter for mobile */
+                margin-right: 3px;
                 text-align: center;
             }
-            .time-unit:nth-child(4) {
-                flex: 0 0 auto; /* Minutes stays with Hours */
+            .time-unit#years::after {
+                content: "Años"; /* No space before */
+                margin-right: 0;
             }
-            .time-unit:nth-child(5) {
-                flex: 0 0 100%; /* Seconds starts new line */
+            .time-unit#days::after {
+                content: "Días";
+                margin-right: 0;
+                white-space: nowrap; /* Prevent line break */
+            }
+            .time-unit#hours::after {
+                content: "HR";
+                margin-right: 0; /* No space before MIN */
+            }
+            .time-unit#minutes::after {
+                content: "MIN";
+                margin-right: 0;
+            }
+            .time-unit#seconds::after {
+                content: "SEG";
+            }
+            .time-unit#years, .time-unit#days {
+                flex: 0 0 auto;
+                white-space: nowrap; /* Keep Years and Days together */
+            }
+            .time-unit#hours {
+                flex: 0 0 100%; /* Hours on new line */
                 margin-top: 5px;
-                text-align: center;
+            }
+            .time-unit#minutes {
+                flex: 0 0 auto; /* Minutes with Hours */
+                white-space: nowrap; /* Keep Hours and Minutes together */
+            }
+            .time-unit#seconds {
+                flex: 0 0 100%; /* Seconds on new line */
+                margin-top: 5px;
             }
         }
         @media (max-width: 480px) {
@@ -412,25 +447,45 @@
                 font-size: 1em;
             }
             .time-unit {
-                min-width: 40px; /* Even tighter for small screens */
-                margin-right: 3px; /* Minimal spacing */
+                min-width: 35px; /* Even tighter for small screens */
+                margin-right: 2px;
                 text-align: center;
             }
-            .time-unit:nth-child(1), .time-unit:nth-child(2) {
-                flex: 0 0 auto;
+            .time-unit#years::after {
+                content: "Años";
+                margin-right: 0;
             }
-            .time-unit:nth-child(3) {
+            .time-unit#days::after {
+                content: "Días";
+                margin-right: 0;
+                white-space: nowrap;
+            }
+            .time-unit#hours::after {
+                content: "HR";
+                margin-right: 0;
+            }
+            .time-unit#minutes::after {
+                content: "MIN";
+                margin-right: 0;
+            }
+            .time-unit#seconds::after {
+                content: "SEG";
+            }
+            .time-unit#years, .time-unit#days {
+                flex: 0 0 auto;
+                white-space: nowrap;
+            }
+            .time-unit#hours {
                 flex: 0 0 100%;
                 margin-top: 5px;
-                text-align: center;
             }
-            .time-unit:nth-child(4) {
+            .time-unit#minutes {
                 flex: 0 0 auto;
+                white-space: nowrap;
             }
-            .time-unit:nth-child(5) {
+            .time-unit#seconds {
                 flex: 0 0 100%;
                 margin-top: 5px;
-                text-align: center;
             }
         }
     </style>
@@ -475,11 +530,11 @@
         <h2>Tiempo que lleva Cuba llorando</h2>
         <h3>Desde 1 de Enero, 1959</h3>
         <div id="clock">
-            <span class="time-unit" id="years">0</span> Años
-            <span class="time-unit" id="days">0</span> Días
-            <span class="time-unit" id="hours">0</span> Horas
-            <span class="time-unit" id="minutes">0</span> Minutos
-            <span class="time-unit" id="seconds">0</span> Segundos
+            <span class="time-unit" id="years">0</span>
+            <span class="time-unit" id="days">0</span>
+            <span class="time-unit" id="hours">0</span>
+            <span class="time-unit" id="minutes">0</span>
+            <span class="time-unit" id="seconds">0</span>
         </div>
         <div id="current-date">Fecha: <span id="date-display">0</span></div>
     </div>
@@ -660,8 +715,8 @@
 
         function flyTo(coords) {
             map.flyTo(coords, 14, {
-                animate: true,
-                duration: 1.5,
+                animate: true;
+                duration: 1.5;
                 easeLinearity: 0.3
             });
             markers.forEach(marker => {
@@ -714,8 +769,8 @@
                     country = country ? country[1].toLowerCase() : null;
                     if (country && country.toLowerCase() === filter.toLowerCase()) {
                         map.flyTo(marker.getLatLng(), 14, {
-                            animate: true,
-                            duration: 1.5,
+                            animate: true;
+                            duration: 1.5;
                             easeLinearity: 0.3
                         });
                         marker.openPopup();
@@ -734,8 +789,8 @@
                     city = city ? city[1] : null;
                     if (city && city === filter) {
                         map.flyTo(marker.getLatLng(), 14, {
-                            animate: true,
-                            duration: 1.5,
+                            animate: true;
+                            duration: 1.5;
                             easeLinearity: 0.3
                         });
                         marker.openPopup();
