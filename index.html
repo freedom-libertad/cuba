@@ -57,10 +57,10 @@
             font-size: 1.2em;
             color: #333;
         }
-        .motivation {
+        .info p.motivation {
             font-family: 'Montserrat', sans-serif;
-            color: #ff0000; /* Red color for motivation text */
-            font-size: 1.5em;
+            color: #ff0000 !important; /* Red color with increased specificity */
+            font-size: 2em; /* Larger font size */
             font-weight: bold;
             margin-top: 10px;
         }
@@ -368,6 +368,9 @@
             .economic-metric p {
                 font-size: 1.3em;
             }
+            .info p.motivation {
+                font-size: 2em;
+            }
         }
         @media (max-width: 767px) {
             #map {
@@ -455,6 +458,9 @@
             .economic-metric p {
                 font-size: 1em;
             }
+            .info p.motivation {
+                font-size: 1.8em; /* Slightly smaller for mobile */
+            }
         }
         @media (max-width: 480px) {
             #map {
@@ -537,6 +543,9 @@
             }
             .economic-metric p {
                 font-size: 0.9em;
+            }
+            .info p.motivation {
+                font-size: 1.6em; /* Slightly smaller for smaller screens */
             }
         }
     </style>
@@ -646,11 +655,11 @@
         <button onclick="addProtest()">Agregar</button>
     </div>
     <div class="call-to-action">
-        <h3>¡Comparte esta causa por la libertad! Copia el enlace: <a href="https://freedom-libertad.github.io/cuba/" style="color: white; text-decoration: underline;">https://freedom-libertad.github.io/cuba/</a></h3>
+        <h3>¡Únete a nuestra lucha por la libertad! Firma La Petición: <a href="https://chng.it/KMzxD22ZJJ" style="color: white; text-decoration: underline;">https://chng.it/KMzxD22ZJJ</a></h3>
         <div class="social-share">
-            <a href="https://twitter.com/intent/tweet?url=https://freedom-libertad.github.io/cuba/&text=Únete%20al%2011J%20por%20la%20libertad%20en%20Cuba!%20%2311JPorLaLibertad" target="_blank"><i class="fab fa-twitter"></i></a>
-            <a href="https://www.facebook.com/sharer/sharer.php?u=https://freedom-libertad.github.io/cuba/&quote=Únete%20al%2011J%20por%20la%20libertad%20en%20Cuba!%20%2311JPorLaLibertad" target="_blank"><i class="fab fa-facebook-f"></i></a>
-            <a href="whatsapp://send?text=Únete%20al%2011J%20por%20la%20libertad%20en%20Cuba!%20%2311JPorLaLibertad%20https://freedom-libertad.github.io/cuba/" data-action="share/whatsapp" target="_blank"><i class="fab fa-whatsapp"></i></a>
+            <a href="https://twitter.com/intent/tweet?url=https://chng.it/KMzxD22ZJJ&text=Únete%20al%2011J%20por%20la%20libertad%20en%20Cuba!%20%2311JPorLaLibertad" target="_blank"><i class="fab fa-twitter"></i></a>
+            <a href="https://www.facebook.com/sharer/sharer.php?u=https://chng.it/KMzxD22ZJJ&quote=Únete%20al%2011J%20por%20la%20libertad%20en%20Cuba!%20%2311JPorLaLibertad" target="_blank"><i class="fab fa-facebook-f"></i></a>
+            <a href="whatsapp://send?text=Únete%20al%2011J%20por%20la%20libertad%20en%20Cuba!%20%2311JPorLaLibertad%20https://chng.it/KMzxD22ZJJ" data-action="share/whatsapp" target="_blank"><i class="fab fa-whatsapp"></i></a>
         </div>
     </div>
     <div class="footer">
