@@ -226,18 +226,18 @@
             color: #ff0000;
             border: 5px solid #333;
             padding: 15px;
-            display: flex; /* Changed to flex for line breaks */
-            flex-wrap: wrap; /* Allow wrapping */
+            display: flex;
+            flex-wrap: wrap;
             justify-content: center;
             box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
-            letter-spacing: 3px;
+            letter-spacing: 1px; /* Reduced for tighter text */
             text-align: center;
         }
         .time-unit {
             display: inline-block;
             min-width: 80px;
             text-align: right;
-            margin-right: 10px;
+            margin-right: 8px; /* Reduced for tighter spacing */
         }
         #current-date {
             font-family: 'Segment7', monospace;
@@ -275,7 +275,7 @@
             }
             .time-unit {
                 min-width: 80px;
-                margin-right: 10px;
+                margin-right: 8px;
             }
         }
         @media (max-width: 767px) {
@@ -326,34 +326,34 @@
             }
             #clock {
                 font-size: 1.8em;
-                flex-direction: row; /* Ensure row layout */
-                flex-wrap: wrap; /* Allow wrapping */
+                flex-direction: row;
+                flex-wrap: wrap;
                 justify-content: center;
+                align-items: center; /* Center items vertically */
             }
             #current-date {
                 font-size: 1.1em;
             }
             .time-unit {
-                min-width: 50px;
-                margin-right: 5px;
+                min-width: 45px; /* Tighter for mobile */
+                margin-right: 5px; /* Tighter spacing */
+                text-align: center; /* Center text for better alignment */
             }
             .time-unit:nth-child(1), .time-unit:nth-child(2) {
-                /* Years and Days stay on the same line */
-                flex: 0 0 auto;
+                flex: 0 0 auto; /* Years and Days on same line */
             }
             .time-unit:nth-child(3) {
-                /* Hours starts a new line */
-                flex: 0 0 100%; /* Full width to force line break */
+                flex: 0 0 100%; /* Hours starts new line */
                 margin-top: 5px;
+                text-align: center;
             }
             .time-unit:nth-child(4) {
-                /* Minutes stays with Hours */
-                flex: 0 0 auto;
+                flex: 0 0 auto; /* Minutes stays with Hours */
             }
             .time-unit:nth-child(5) {
-                /* Seconds starts a new line */
-                flex: 0 0 100%; /* Full width to force line break */
+                flex: 0 0 100%; /* Seconds starts new line */
                 margin-top: 5px;
+                text-align: center;
             }
         }
         @media (max-width: 480px) {
@@ -412,8 +412,9 @@
                 font-size: 1em;
             }
             .time-unit {
-                min-width: 45px;
-                margin-right: 3px;
+                min-width: 40px; /* Even tighter for small screens */
+                margin-right: 3px; /* Minimal spacing */
+                text-align: center;
             }
             .time-unit:nth-child(1), .time-unit:nth-child(2) {
                 flex: 0 0 auto;
@@ -421,6 +422,7 @@
             .time-unit:nth-child(3) {
                 flex: 0 0 100%;
                 margin-top: 5px;
+                text-align: center;
             }
             .time-unit:nth-child(4) {
                 flex: 0 0 auto;
@@ -428,6 +430,7 @@
             .time-unit:nth-child(5) {
                 flex: 0 0 100%;
                 margin-top: 5px;
+                text-align: center;
             }
         }
     </style>
